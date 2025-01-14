@@ -22,7 +22,7 @@ export const link = sqliteTable('link', {
 		.notNull()
 		.references(() => user.id),
 	createdAt: integer('created_at', { mode: 'timestamp' }).notNull(),
-	ttl: integer('ttl').notNull()
+	expiresAt: integer('expires_at', { mode: 'timestamp' })
 });
 
 export type Session = typeof session.$inferSelect;

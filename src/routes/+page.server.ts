@@ -48,7 +48,7 @@ export const actions = {
 					link,
 					userId,
 					createdAt: new Date(),
-					ttl
+					expiresAt: new Date(Date.now() + ttl * 1000)
 				}
 			])
 			.run();
