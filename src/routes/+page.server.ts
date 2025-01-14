@@ -1,50 +1,28 @@
-import type { Actions } from './$types';
+import type { Actions, PageServerLoad } from './$types';
 import { env } from '$env/dynamic/public';
 import { nanoid } from 'nanoid';
 import { db, schema } from '$lib/server/db';
+import { redirect } from '@sveltejs/kit';
+import { getNumber, getString, getURL } from '$lib/helper/form';
 
 const idLength = Number(env.PUBLIC_ID_LENGTH ?? 5);
 const DAY = 86400;
-const getNumber = (value: string | FormDataEntryValue | null, defaultValue?: number): number => {
-	const number = Number(value);
-	if (number) {
-		return number;
-	} else if (defaultValue) {
-		return defaultValue;
-	}
 
-	throw new Error('Value is required');
-};
-
-const getURL = (value: string | FormDataEntryValue | null): string => {
-	if (value == null) {
-		throw new Error('Value is required');
-	}
-
-	const url = String(value);
-	if (url.match(/^[A-Za-z]+:\/\//)) {
-		return url;
-	}
-	return `https://${url}`;
-};
-
-const getString = (
-	value: string | FormDataEntryValue | null,
-	defaultValue?: string | (() => string)
-) => {
-	if (value != null && value.length >= idLength) {
-		const string = String(value);
-		return string;
-	} else if (defaultValue != null) {
-		if (typeof defaultValue === 'string') {
-			return defaultValue;
-		}
-		console.log(defaultValue(), idLength);
-		return defaultValue();
-	}
-
-	throw new Error('Value is required');
-};
+export const load = (() => {
+	// TODO: Get ref to load data
+	const data = db
+		.select({
+			url: schema.link.url,
+			key: schema.link.id,
+			expiresAt: schema.link.expiresAt
+		})
+		.from(schema.link)
+		.limit(3)
+		.all();
+	return {
+		links: data
+	};
+}) satisfies PageServerLoad;
 
 export const actions = {
 	default: async ({ request, locals }) => {
@@ -65,6 +43,6 @@ export const actions = {
 			])
 			.run();
 
-		return { success: true };
+		redirect(301, `/link/${short}`);
 	}
 } satisfies Actions;

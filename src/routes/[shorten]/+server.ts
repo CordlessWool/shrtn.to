@@ -7,7 +7,7 @@ export const GET: RequestHandler = ({ params }) => {
 	const { shorten } = params;
 	const data = db
 		.select({
-			link: schema.link.link
+			link: schema.link.url
 		})
 		.from(schema.link)
 		.where(eq(schema.link.id, shorten))
