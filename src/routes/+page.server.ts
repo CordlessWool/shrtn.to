@@ -16,6 +16,18 @@ const getNumber = (value: string | FormDataEntryValue | null, defaultValue?: num
 	throw new Error('Value is required');
 };
 
+const getURL = (value: string | FormDataEntryValue | null): string => {
+	if (value == null) {
+		throw new Error('Value is required');
+	}
+
+	const url = String(value);
+	if (url.match(/^[A-Za-z]+:\/\//)) {
+		return url;
+	}
+	return `https://${url}`;
+};
+
 const getString = (
 	value: string | FormDataEntryValue | null,
 	defaultValue?: string | (() => string)
@@ -37,7 +49,7 @@ const getString = (
 export const actions = {
 	default: async ({ request, locals }) => {
 		const data = await request.formData();
-		const link: string = getString(data.get('link'));
+		const url: string = getURL(data.get('link'));
 		const short: string = getString(data.get('short'), () => nanoid(idLength));
 		const ttl: number = getNumber(data.get('ttl'), DAY);
 		const userId = locals.user?.id ?? 'default';
@@ -45,7 +57,7 @@ export const actions = {
 			.values([
 				{
 					id: short,
-					link,
+					url,
 					userId,
 					createdAt: new Date(),
 					expiresAt: new Date(Date.now() + ttl * 1000)

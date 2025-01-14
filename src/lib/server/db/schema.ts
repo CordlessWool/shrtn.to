@@ -17,7 +17,7 @@ export const session = sqliteTable('session', {
 
 export const link = sqliteTable('link', {
 	id: text('id').primaryKey(),
-	link: text('link').notNull(),
+	url: text('url').notNull(),
 	userId: text('user_id')
 		.notNull()
 		.references(() => user.id),

@@ -15,6 +15,13 @@
       "when": 1736859716251,
       "tag": "0001_ttl_to_expires",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1736863523843,
+      "tag": "0002_rename-link",
+      "breakpoints": true
     }
   ]
 }
