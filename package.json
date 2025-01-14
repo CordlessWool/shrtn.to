@@ -47,6 +47,7 @@
 		"@node-rs/argon2": "^1.8.3",
 		"@oslojs/crypto": "^1.0.1",
 		"@oslojs/encoding": "^1.1.0",
-		"drizzle-orm": "^0.38.3"
+		"drizzle-orm": "^0.38.3",
+		"nanoid": "^5.0.9"
 	}
 }
