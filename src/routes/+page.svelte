@@ -3,7 +3,6 @@
 	import LinkTile from '$lib/comp/LinkTile.svelte';
 
 	const { data } = $props();
-	console.log(data);
 </script>
 
 <main>
@@ -15,7 +14,7 @@
 		</form>
 		{#if data}
 			{#each data.links as link}
-				<LinkTile {...link} />
+				<LinkTile {...link} deletePath="?/remove" />
 			{/each}
 		{/if}
 	</section>

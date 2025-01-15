@@ -2,10 +2,10 @@ import type { Actions, PageServerLoad } from './$types';
 import { env } from '$env/dynamic/public';
 import { nanoid } from 'nanoid';
 import { db, schema } from '$lib/server/db';
-import { redirect } from '@sveltejs/kit';
+import { error, redirect } from '@sveltejs/kit';
 import { getNumber, getString, getURL } from '$lib/helper/form';
 import { createAndLoginTempUser } from '$lib/helper/auth.server';
-import { eq } from 'drizzle-orm';
+import { and, eq } from 'drizzle-orm';
 
 const idLength = Number(env.PUBLIC_ID_LENGTH ?? 5);
 const DAY = 86400;
@@ -58,5 +58,18 @@ export const actions = {
 			.run();
 
 		redirect(302, `/link/${short}`);
+	},
+	remove: async ({ locals, request }) => {
+		const { user } = locals;
+		if (user == null) {
+			return error(401, 'Not Authenticated');
+		}
+
+		const data = await request.formData();
+		const key = getString(data.get('key'));
+		db.delete(schema.link)
+			.where(and(eq(schema.link.id, key), eq(schema.link.userId, user.id)))
+			.run();
+		return { success: true };
 	}
 } satisfies Actions;
