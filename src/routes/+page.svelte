@@ -1,20 +1,47 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import LinkTile from '$lib/comp/LinkTile.svelte';
+	import type { Link } from '$lib/definitions.js';
+	import type { PageData } from './$types.js';
 
-	const { data } = $props();
+	const { data }: { data: PageData } = $props();
+	let links = $state(data.links);
+
+	const addLink = (link: Link) => {
+		links.push({
+			...link,
+			expiresAt: link.expiresAt ? new Date(link.expiresAt) : null
+		});
+	};
+
+	const removeLink = (key: string) => {
+		links = links.filter((l) => l.key !== key);
+	};
 </script>
 
 <main>
 	<h1>shrtn.to</h1>
 	<p>A small easy to setup open-source link shortener.</p>
 	<section class="links">
-		<form method="POST" use:enhance action="?/add">
-			<input name="link" />
+		<form
+			method="POST"
+			use:enhance={({ formElement }) => {
+				return async ({ result }) => {
+					if (result.type === 'redirect') {
+						const response = await fetch(result.location);
+						const data = (await response.json()) as Link;
+						addLink(data);
+						formElement.reset();
+					}
+				};
+			}}
+			action="?/add"
+		>
+			<input name="link" placeholder="Enter link to shorten" />
 		</form>
 		{#if data}
-			{#each data.links as link}
-				<LinkTile {...link} deletePath="?/remove" />
+			{#each links as link (link.key)}
+				<LinkTile {...link} deletePath="?/remove" ondeleted={removeLink} />
 			{/each}
 		{/if}
 	</section>

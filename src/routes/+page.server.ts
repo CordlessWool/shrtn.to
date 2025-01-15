@@ -6,28 +6,35 @@ import { error, redirect } from '@sveltejs/kit';
 import { getNumber, getString, getURL } from '$lib/helper/form';
 import { createAndLoginTempUser } from '$lib/helper/auth.server';
 import { and, eq } from 'drizzle-orm';
+import type { Link } from '$lib/definitions';
 
 const idLength = Number(env.PUBLIC_ID_LENGTH ?? 5);
 const DAY = 86400;
 
-export const load = (({ locals }) => {
+type LoadData = {
+	links: Link[];
+};
+
+export const load: PageServerLoad = ({ locals }) => {
 	if (!locals.user) {
-		return {};
+		return {
+			links: []
+		} satisfies LoadData;
 	}
 	const data = db
 		.select({
 			url: schema.link.url,
 			key: schema.link.id,
+			createdAt: schema.link.createdAt,
 			expiresAt: schema.link.expiresAt
 		})
 		.from(schema.link)
 		.where(eq(schema.link.userId, locals.user.id))
-		.limit(3)
 		.all();
 	return {
 		links: data
-	};
-}) satisfies PageServerLoad;
+	} satisfies LoadData;
+};
 
 export const actions = {
 	add: async (event) => {
@@ -40,7 +47,6 @@ export const actions = {
 		}
 
 		const data = await request.formData();
-		console.log(data, user);
 		const url: string = getURL(data.get('link'));
 		const short: string = getString(data.get('short'), () => nanoid(idLength));
 		const ttl: number = getNumber(data.get('ttl'), DAY);

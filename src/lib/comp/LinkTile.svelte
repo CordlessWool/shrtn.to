@@ -4,12 +4,14 @@
 	import { onMount } from 'svelte';
 	import { Copy, Trash2 } from 'lucide-svelte';
 	import IconButton from './IconButton.svelte';
+	import { enhance } from '$app/forms';
 
 	type Props = Link & {
-		deletePath?: string;
+		deletePath: string;
+		ondeleted: (key: string) => void;
 	};
 
-	const { url, key, expiresAt, deletePath }: Props = $props();
+	const { url, key, expiresAt, deletePath, ondeleted }: Props = $props();
 	const shrtnUrl = new URL(key, PUBLIC_BASE_URL);
 	const { hostname } = new URL(url);
 	const favicon = `https://icons.duckduckgo.com/ip3/${hostname}.ico`;
@@ -24,7 +26,8 @@
 		return { days, hours, minutes, seconds };
 	};
 
-	const getExpiresInText = (expiresAt: Date) => {
+	const getExpiresInText = (expiresAt: Date | null) => {
+		if (!expiresAt) return 'never';
 		const { days, hours, minutes } = calcTimeLeft(expiresAt);
 		if (days > 1) return `${days} days`;
 		if (hours > 2) return `${days * 24 + hours} hours`;
@@ -60,7 +63,18 @@
 			<Copy />
 		</IconButton>
 		{#if deletePath}
-			<form method="POST" action={deletePath}>
+			<form
+				method="POST"
+				action={deletePath}
+				use:enhance={() => {
+					return ({ result }) => {
+						console.log(result, key);
+						if (result.type === 'success') {
+							ondeleted(key);
+						}
+					};
+				}}
+			>
 				<IconButton submit>
 					<Trash2 />
 				</IconButton>
@@ -78,7 +92,7 @@
 	}
 
 	img {
-		@apply row-span-3 items-center justify-center p-1;
+		@apply row-span-3 w-12 items-center justify-center p-1;
 	}
 	h2 {
 		@apply text-lg;
