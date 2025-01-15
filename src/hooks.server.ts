@@ -4,16 +4,15 @@ import * as auth from '$lib/server/auth.js';
 import { db, schema } from '$lib/server/db/index.js';
 import { lte } from 'drizzle-orm';
 
-const HOUR = 3600000;
-const TEN_MINUTES = 600000;
+const TEN_MINUTES_IN_MS = 600000;
 const cleanupLinks = () => {
 	// Remove expired links
 	db.delete(schema.link).where(lte(schema.link.expiresAt, new Date())).run();
 };
 
-setInterval(cleanupLinks, TEN_MINUTES);
+setInterval(cleanupLinks, TEN_MINUTES_IN_MS);
 
-const handleAuth: Handle = async ({ event, resolve }) => {
+const handleAuth: Handle = ({ event, resolve }) => {
 	const sessionToken = event.cookies.get(auth.sessionCookieName);
 	if (!sessionToken) {
 		event.locals.user = null;
@@ -21,7 +20,7 @@ const handleAuth: Handle = async ({ event, resolve }) => {
 		return resolve(event);
 	}
 
-	const { session, user } = await auth.validateSessionToken(sessionToken);
+	const { session, user } = auth.validateSessionToken(sessionToken);
 	if (session) {
 		auth.setSessionTokenCookie(event, sessionToken, session.expiresAt);
 	} else {

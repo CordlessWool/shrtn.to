@@ -2,9 +2,12 @@ import { sqliteTable, text, integer } from 'drizzle-orm/sqlite-core';
 
 export const user = sqliteTable('user', {
 	id: text('id').primaryKey(),
-	age: integer('age'),
-	username: text('username').notNull().unique(),
-	passwordHash: text('password_hash').notNull()
+	temp: integer('temp', { mode: 'boolean' }).notNull(),
+	email: text('email').unique(),
+	service: text('service'),
+	serviceId: text('service_id'),
+	lastSeen: integer('last_seen', { mode: 'timestamp' }).notNull(),
+	createdAt: integer('created_at', { mode: 'timestamp' }).notNull()
 });
 
 export const session = sqliteTable('session', {

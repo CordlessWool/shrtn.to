@@ -73,7 +73,7 @@
 <style lang="postcss">
 	section {
 		@apply grid grid-flow-col grid-cols-3 grid-rows-3 items-center gap-x-3;
-		@apply bg-zinc-700 p-3;
+		@apply rounded-md bg-zinc-700 p-3;
 		grid-template-columns: auto 1fr auto;
 	}
 

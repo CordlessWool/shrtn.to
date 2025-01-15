@@ -10,7 +10,7 @@
 	<h1>shrtn.to</h1>
 	<p>A small easy to setup open-source link shortener.</p>
 	<section class="links">
-		<form method="POST" use:enhance>
+		<form method="POST" use:enhance action="?/add">
 			<input name="link" />
 		</form>
 		{#if data}

@@ -4,12 +4,16 @@ import { nanoid } from 'nanoid';
 import { db, schema } from '$lib/server/db';
 import { redirect } from '@sveltejs/kit';
 import { getNumber, getString, getURL } from '$lib/helper/form';
+import { createAndLoginTempUser } from '$lib/helper/auth.server';
+import { eq } from 'drizzle-orm';
 
 const idLength = Number(env.PUBLIC_ID_LENGTH ?? 5);
 const DAY = 86400;
 
-export const load = (() => {
-	// TODO: Get ref to load data
+export const load = (({ locals }) => {
+	if (!locals.user) {
+		return {};
+	}
 	const data = db
 		.select({
 			url: schema.link.url,
@@ -17,6 +21,7 @@ export const load = (() => {
 			expiresAt: schema.link.expiresAt
 		})
 		.from(schema.link)
+		.where(eq(schema.link.userId, locals.user.id))
 		.limit(3)
 		.all();
 	return {
@@ -25,24 +30,33 @@ export const load = (() => {
 }) satisfies PageServerLoad;
 
 export const actions = {
-	default: async ({ request, locals }) => {
+	add: async (event) => {
+		const { locals, request } = event;
+		let { user } = locals;
+
+		if (user == null) {
+			// create tmp user
+			({ user } = createAndLoginTempUser(event));
+		}
+
 		const data = await request.formData();
+		console.log(data, user);
 		const url: string = getURL(data.get('link'));
 		const short: string = getString(data.get('short'), () => nanoid(idLength));
 		const ttl: number = getNumber(data.get('ttl'), DAY);
-		const userId = locals.user?.id ?? 'default';
+
 		db.insert(schema.link)
 			.values([
 				{
 					id: short,
 					url,
-					userId,
+					userId: user.id,
 					createdAt: new Date(),
 					expiresAt: new Date(Date.now() + ttl * 1000)
 				}
 			])
 			.run();
 
-		redirect(301, `/link/${short}`);
+		redirect(302, `/link/${short}`);
 	}
 } satisfies Actions;
