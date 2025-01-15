@@ -5,6 +5,7 @@
 	import { Copy, Trash2 } from 'lucide-svelte';
 	import IconButton from './IconButton.svelte';
 	import { enhance } from '$app/forms';
+	import { fade, slide } from 'svelte/transition';
 
 	type Props = Link & {
 		deletePath: string;
@@ -44,7 +45,7 @@
 	});
 </script>
 
-<section>
+<section transition:slide>
 	<img src={favicon} alt={`Icon of ${hostname}`} />
 	<a href={url} target="_blank" class="link">
 		<h2>
