@@ -10,6 +10,13 @@ export const user = sqliteTable('user', {
 	createdAt: integer('created_at', { mode: 'timestamp' }).notNull()
 });
 
+export const magicLink = sqliteTable('magic_link', {
+	id: text('id').primaryKey(),
+	userId: text('user_id')
+		.notNull()
+		.references(() => user.id)
+});
+
 export const session = sqliteTable('session', {
 	id: text('id').primaryKey(),
 	userId: text('user_id')

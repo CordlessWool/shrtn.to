@@ -19,3 +19,9 @@ export const createAndLoginTempUser = (event: RequestEvent) => {
 	auth.setSessionTokenCookie(event, sessionToken, session.expiresAt);
 	return { user, session } satisfies App.Locals;
 };
+
+export const loginUser = (event: RequestEvent, userId: string) => {
+	const sessionToken = auth.generateSessionToken();
+	const session = auth.createSession(sessionToken, userId);
+	auth.setSessionTokenCookie(event, sessionToken, session.expiresAt);
+};

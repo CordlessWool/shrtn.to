@@ -5,7 +5,7 @@
 	import { Copy, Trash2 } from 'lucide-svelte';
 	import IconButton from './IconButton.svelte';
 	import { enhance } from '$app/forms';
-	import { fade, slide } from 'svelte/transition';
+	import { slide } from 'svelte/transition';
 
 	type Props = Link & {
 		deletePath: string;
@@ -61,7 +61,7 @@
 	</small>
 	<div class="actions">
 		<IconButton onclick={() => navigator.clipboard.writeText(shrtnUrl.href)}>
-			<Copy />
+			<Copy size={20} />
 		</IconButton>
 		{#if deletePath}
 			<form
@@ -77,7 +77,7 @@
 				}}
 			>
 				<IconButton submit>
-					<Trash2 />
+					<Trash2 size={20} />
 				</IconButton>
 				<input name="key" value={key} hidden />
 			</form>
@@ -111,7 +111,7 @@
 	}
 
 	.actions {
-		@apply flex flex-row gap-3;
+		@apply flex flex-row;
 		@apply row-span-3;
 		@apply justify-self-end;
 	}
