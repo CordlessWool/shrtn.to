@@ -14,6 +14,11 @@
 		});
 	};
 
+	const loadLink = async (url: string) => {
+		const response = await fetch(url);
+		return (await response.json()) as Link;
+	};
+
 	const removeLink = (key: string) => {
 		links = links.filter((l) => l.key !== key);
 	};
@@ -22,14 +27,14 @@
 <main>
 	<h1>shrtn.to</h1>
 	<p>A small easy to setup open-source link shortener.</p>
+
 	<section class="links">
 		<form
 			method="POST"
 			use:enhance={({ formElement }) => {
 				return async ({ result }) => {
 					if (result.type === 'redirect') {
-						const response = await fetch(result.location);
-						const data = (await response.json()) as Link;
+						const data = await loadLink(result.location);
 						addLink(data);
 						formElement.reset();
 					}
@@ -49,11 +54,14 @@
 
 <style lang="postcss">
 	main {
-		@apply flex min-h-screen flex-col items-center justify-center gap-3;
+		@apply flex min-h-screen flex-col items-center justify-center gap-3 p-3 md:p-7;
 		@apply bg-zinc-800 text-zinc-200;
 	}
 	h1 {
 		@apply text-4xl;
+	}
+	form {
+		@apply md:col-span-2;
 	}
 	input {
 		@apply w-full px-5 py-3;
@@ -67,7 +75,8 @@
 		@apply border-zinc-300;
 	}
 
-	.links {
-		@apply grid min-w-96 gap-3;
+	section.links {
+		@apply grid gap-3 md:grid-cols-2;
+		@apply m-3 w-full max-w-4xl md:m-7;
 	}
 </style>

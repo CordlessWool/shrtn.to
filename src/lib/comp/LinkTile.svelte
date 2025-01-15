@@ -48,9 +48,9 @@
 <section transition:slide>
 	<img src={favicon} alt={`Icon of ${hostname}`} />
 	<a href={url} target="_blank" class="link">
-		<h2>
+		<div class="shorted">
 			{shrtnUrl.hostname}{shrtnUrl.pathname}
-		</h2>
+		</div>
 		<p class="tourl">
 			{url}
 		</p>
@@ -88,15 +88,15 @@
 <style lang="postcss">
 	section {
 		@apply grid grid-flow-col grid-cols-3 grid-rows-3 items-center gap-x-3;
-		@apply rounded-md bg-zinc-700 p-3;
+		@apply w-full rounded-md bg-zinc-700 p-3;
 		grid-template-columns: auto 1fr auto;
 	}
 
 	img {
 		@apply row-span-3 w-12 items-center justify-center p-1;
 	}
-	h2 {
-		@apply text-lg;
+	.shorted {
+		@apply font-bold;
 	}
 	.link {
 		@apply row-span-2;
