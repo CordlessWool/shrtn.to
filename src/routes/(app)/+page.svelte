@@ -54,8 +54,7 @@
 
 <style lang="postcss">
 	main {
-		@apply flex min-h-screen flex-col items-center justify-center gap-3 p-3 md:p-7;
-		@apply bg-zinc-800 text-zinc-200;
+		@apply flex min-h-full flex-col items-center justify-center gap-3 p-3 md:p-7;
 	}
 	h1 {
 		@apply text-4xl;

@@ -4,6 +4,7 @@ import { mail } from '$lib/server/mail';
 import type { Actions } from './$types';
 import { nanoid } from 'nanoid';
 import { eq } from 'drizzle-orm';
+import { PUBLIC_BASE_URL } from '$env/static/public';
 
 const HOUR_IN_MS = 3600000;
 const EXPIRE_IN_HOURS = 3;
@@ -55,6 +56,7 @@ export const actions = {
 				}
 			])
 			.run();
+		const magicLinkUrl = new URL(`login/${magicid}`, PUBLIC_BASE_URL);
 		mail(
 			email,
 			'Your login link',
@@ -62,7 +64,7 @@ export const actions = {
 		Hello there!
 
 		Click the link below to login:
-		http://localhost:5173/usr/login/${magicid}
+		${magicLinkUrl.toString()}
 
 		The link will expire in ${EXPIRE_IN_HOURS} hours.
 		`
