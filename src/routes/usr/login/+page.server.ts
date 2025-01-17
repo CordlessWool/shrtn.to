@@ -6,6 +6,8 @@ import { nanoid } from 'nanoid';
 import { eq } from 'drizzle-orm';
 
 const HOUR_IN_MS = 3600000;
+const EXPIRE_IN_HOURS = 3;
+const EXPIRE_IN_MS = HOUR_IN_MS * EXPIRE_IN_HOURS;
 
 const getUserId = (email: string, userId: string | null | undefined): string => {
 	const user = db
@@ -49,7 +51,7 @@ export const actions = {
 				{
 					id: magicid,
 					userId,
-					expiresAt: new Date(Date.now() + HOUR_IN_MS * 3)
+					expiresAt: new Date(Date.now() + EXPIRE_IN_MS)
 				}
 			])
 			.run();
@@ -58,8 +60,11 @@ export const actions = {
 			'Your login link',
 			`
 		Hello there!
+
 		Click the link below to login:
 		http://localhost:5173/usr/login/${magicid}
+
+		The link will expire in ${EXPIRE_IN_HOURS} hours.
 		`
 		);
 		// send email
