@@ -1,5 +1,5 @@
 import { db, schema } from '$lib/server/db';
-import { eq } from 'drizzle-orm';
+import { eq, lte, and } from 'drizzle-orm';
 import type { PageServerLoad } from './$types';
 import { loginUser } from '$lib/helper/auth.server';
 import { error, redirect } from '@sveltejs/kit';
@@ -12,10 +12,10 @@ export const load: PageServerLoad = async (event) => {
 			temp: schema.user.temp
 		})
 		.from(schema.magicLink)
-		.leftJoin(schema.user, eq(schema.user.id, schema.magicLink.userId))
-		.where(eq(schema.magicLink.id, key))
+		.rightJoin(schema.user, eq(schema.user.id, schema.magicLink.userId))
+		.where(and(eq(schema.magicLink.id, key), lte(schema.magicLink.expiresAt, new Date())))
 		.get();
-	console.log(user);
+
 	if (!user) {
 		error(401, 'Not Authorized');
 	}

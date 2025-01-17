@@ -14,7 +14,8 @@ export const magicLink = sqliteTable('magic_link', {
 	id: text('id').primaryKey(),
 	userId: text('user_id')
 		.notNull()
-		.references(() => user.id)
+		.references(() => user.id),
+	expiresAt: integer('expires_at', { mode: 'timestamp' }).notNull()
 });
 
 export const session = sqliteTable('session', {

@@ -5,6 +5,8 @@ import type { Actions } from './$types';
 import { nanoid } from 'nanoid';
 import { eq } from 'drizzle-orm';
 
+const HOUR_IN_MS = 3600000;
+
 const getUserId = (email: string, userId: string | null | undefined): string => {
 	const user = db
 		.select({ id: schema.user.id })
@@ -46,7 +48,8 @@ export const actions = {
 			.values([
 				{
 					id: magicid,
-					userId
+					userId,
+					expiresAt: new Date(Date.now() + HOUR_IN_MS * 3)
 				}
 			])
 			.run();
