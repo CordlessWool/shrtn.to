@@ -38,10 +38,18 @@
 	let expiresText = $state(getExpiresInText(expiresAt));
 
 	onMount(() => {
-		const interval = setInterval(() => {
-			expiresText = getExpiresInText(expiresAt);
-		}, 1000);
-		return () => clearInterval(interval);
+		if (expiresAt != null) {
+			const interval = setInterval(() => {
+				if (expiresAt.getTime() >= Date.now()) {
+					clearInterval(interval);
+					ondeleted(key);
+					return;
+				}
+
+				expiresText = getExpiresInText(expiresAt);
+			}, 5000);
+			return () => clearInterval(interval);
+		}
 	});
 </script>
 
