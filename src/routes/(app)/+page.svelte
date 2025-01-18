@@ -1,5 +1,7 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
+	import Input from '$lib/comp/Input.svelte';
+	import InputFrame from '$lib/comp/InputFrame.svelte';
 	import LinkTile from '$lib/comp/LinkTile.svelte';
 	import type { Link } from '$lib/definitions.js';
 	import type { PageData } from './$types.js';
@@ -42,7 +44,9 @@
 			}}
 			action="?/add"
 		>
-			<input name="link" placeholder="Enter link to shorten" />
+			<InputFrame>
+				<Input name="link" placeholder="Enter link to shorten" autocomplete="off" />
+			</InputFrame>
 		</form>
 		{#if data}
 			{#each links as link (link.key)}
