@@ -40,7 +40,7 @@
 	onMount(() => {
 		if (expiresAt != null) {
 			const interval = setInterval(() => {
-				if (expiresAt.getTime() >= Date.now()) {
+				if (expiresAt.getTime() <= Date.now()) {
 					clearInterval(interval);
 					ondeleted(key);
 					return;
