@@ -4,9 +4,17 @@
 	import Input from '$lib/comp/Input.svelte';
 	import InputFrame from '$lib/comp/InputFrame.svelte';
 	import LinkTile from '$lib/comp/LinkTile.svelte';
-	import type { Link } from '$lib/definitions.js';
+	import {
+		DAY_IN_MS,
+		HOUR_IN_MS,
+		MONTH_IN_MS,
+		WEEK_IN_MS,
+		YEAR_IN_MS,
+		type Link
+	} from '$lib/definitions.js';
 	import { Link as LinkIcon } from 'lucide-svelte';
 	import type { PageData } from './$types.js';
+	import Select from '$lib/comp/Select.svelte';
 
 	const { data }: { data: PageData } = $props();
 	let links = $state(data.links);
@@ -48,6 +56,14 @@
 		>
 			<InputFrame>
 				<Input name="link" placeholder="Enter link to shorten" autocomplete="off" />
+				<Select name="ttl">
+					<option value={HOUR_IN_MS}>a hour</option>
+					<option value={DAY_IN_MS}>a day</option>
+					<option value={WEEK_IN_MS}>a week</option>
+					<option value={MONTH_IN_MS}>a month</option>
+					<option value={YEAR_IN_MS}>a year</option>
+					<option value={-1}>for ever</option>
+				</Select>
 				<IconButton type="submit">
 					<LinkIcon size={16} />
 				</IconButton>
@@ -70,17 +86,6 @@
 	}
 	form {
 		@apply md:col-span-2;
-	}
-	input {
-		@apply w-full px-5 py-3;
-		@apply bg-zinc-700;
-		@apply rounded-md border-zinc-500;
-	}
-
-	input:focus,
-	input:active,
-	input:hover {
-		@apply border-zinc-300;
 	}
 
 	section.links {

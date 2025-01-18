@@ -1,14 +1,15 @@
 <script lang="ts">
-	const { children } = $props();
+	const { children, ...props } = $props();
 </script>
 
-<select>
+<select {...props}>
 	{@render children()}
 </select>
 
 <style lang="postcss">
 	select {
-		@apply w-full border-0 bg-transparent py-3;
-		@apply outline-none;
+		@apply border-0 bg-transparent py-3;
+		@apply cursor-pointer outline-none;
+		@apply ring-0;
 	}
 </style>

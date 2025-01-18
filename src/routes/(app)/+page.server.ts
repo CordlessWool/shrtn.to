@@ -6,10 +6,9 @@ import { error, redirect } from '@sveltejs/kit';
 import { getNumber, getString, getURL } from '$lib/helper/form';
 import { createAndLoginTempUser } from '$lib/helper/auth.server';
 import { and, eq } from 'drizzle-orm';
-import type { Link } from '$lib/definitions';
+import { HOUR_IN_MS, type Link } from '$lib/definitions';
 
 const idLength = Number(env.PUBLIC_ID_LENGTH ?? 5);
-const DAY = 86400;
 
 type LoadData = {
 	links: Link[];
@@ -49,7 +48,8 @@ export const actions = {
 		const data = await request.formData();
 		const url: string = getURL(data.get('link'));
 		const short: string = getString(data.get('short'), () => nanoid(idLength));
-		const ttl: number = getNumber(data.get('ttl'), DAY);
+		const ttl: number = getNumber(data.get('ttl'), HOUR_IN_MS);
+		const expiresAt = ttl === -1 ? null : new Date(Date.now() + ttl);
 
 		db.insert(schema.link)
 			.values([
@@ -58,7 +58,7 @@ export const actions = {
 					url,
 					userId: user.id,
 					createdAt: new Date(),
-					expiresAt: new Date(Date.now() + ttl * 1000)
+					expiresAt
 				}
 			])
 			.run();
