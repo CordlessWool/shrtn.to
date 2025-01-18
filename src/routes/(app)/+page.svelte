@@ -1,9 +1,11 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
+	import IconButton from '$lib/comp/IconButton.svelte';
 	import Input from '$lib/comp/Input.svelte';
 	import InputFrame from '$lib/comp/InputFrame.svelte';
 	import LinkTile from '$lib/comp/LinkTile.svelte';
 	import type { Link } from '$lib/definitions.js';
+	import { Link as LinkIcon } from 'lucide-svelte';
 	import type { PageData } from './$types.js';
 
 	const { data }: { data: PageData } = $props();
@@ -46,6 +48,9 @@
 		>
 			<InputFrame>
 				<Input name="link" placeholder="Enter link to shorten" autocomplete="off" />
+				<IconButton type="submit">
+					<LinkIcon size={16} />
+				</IconButton>
 			</InputFrame>
 		</form>
 		{#if data}

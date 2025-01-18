@@ -8,6 +8,6 @@
 
 <style lang="postcss">
 	button {
-		@apply rounded-full bg-teal-700 p-3 opacity-50 hover:bg-teal-400 hover:opacity-100 dark:border-teal-700 dark:hover:bg-teal-600;
+		@apply rounded-full bg-teal-700 p-3 opacity-90 hover:bg-teal-400 hover:opacity-100 dark:border-teal-700 dark:hover:bg-teal-600;
 	}
 </style>

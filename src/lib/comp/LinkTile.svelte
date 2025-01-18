@@ -119,7 +119,7 @@
 	}
 
 	.actions {
-		@apply flex flex-row;
+		@apply flex flex-row gap-3;
 		@apply row-span-3;
 		@apply justify-self-end;
 	}
