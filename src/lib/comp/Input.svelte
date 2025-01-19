@@ -8,6 +8,6 @@
 	input {
 		all: unset;
 		@apply w-full border-0 bg-transparent py-3;
-		@apply outline-none;
+		@apply outline-none focus:ring-0;
 	}
 </style>
