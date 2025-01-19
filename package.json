@@ -51,7 +51,7 @@
 		"@oslojs/crypto": "^1.0.1",
 		"@oslojs/encoding": "^1.1.0",
 		"drizzle-orm": "^0.38.3",
-		"lucide-svelte": "^0.471.0",
+		"lucide-svelte": "^0.473.0",
 		"nanoid": "^5.0.9",
 		"nodemailer": "^6.9.16"
 	}
