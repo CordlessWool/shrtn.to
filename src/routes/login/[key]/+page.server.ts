@@ -14,7 +14,7 @@ export const load: PageServerLoad = async (event) => {
 			temp: schema.user.temp
 		})
 		.from(schema.magicLink)
-		.leftJoin(schema.user, eq(schema.magicLink.userId, schema.user.id))
+		.innerJoin(schema.user, eq(schema.magicLink.userId, schema.user.id))
 		.where(and(eq(schema.magicLink.id, key), gte(schema.magicLink.expiresAt, new Date())))
 		.get();
 
