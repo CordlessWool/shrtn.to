@@ -3,7 +3,7 @@ import { env } from '$env/dynamic/public';
 import { nanoid } from 'nanoid';
 import { db, schema } from '$lib/server/db';
 import { error, redirect } from '@sveltejs/kit';
-import { getNumber, getString, getURL } from '$lib/helper/form';
+import { getMaxTTL, getNumber, getString, getTTLs, getURL } from '$lib/helper/form';
 import { createAndLoginTempUser } from '$lib/helper/auth.server';
 import { and, eq } from 'drizzle-orm';
 import { HOUR_IN_MS, type Link } from '$lib/definitions';
@@ -51,6 +51,9 @@ export const actions = {
 		const ttl: number = getNumber(data.get('ttl'), HOUR_IN_MS);
 		const expiresAt = ttl === -1 ? null : new Date(Date.now() + ttl);
 
+		if (ttl > getMaxTTL(!user.temp)) {
+			return error(400, 'TTL too high');
+		}
 		db.insert(schema.link)
 			.values([
 				{

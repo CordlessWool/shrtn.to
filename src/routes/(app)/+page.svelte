@@ -4,17 +4,11 @@
 	import Input from '$lib/comp/Input.svelte';
 	import InputFrame from '$lib/comp/InputFrame.svelte';
 	import LinkTile from '$lib/comp/LinkTile.svelte';
-	import {
-		DAY_IN_MS,
-		HOUR_IN_MS,
-		MONTH_IN_MS,
-		WEEK_IN_MS,
-		YEAR_IN_MS,
-		type Link
-	} from '$lib/definitions.js';
+	import { type Link } from '$lib/definitions.js';
 	import { Link as LinkIcon } from 'lucide-svelte';
 	import type { PageData } from './$types.js';
 	import Select from '$lib/comp/Select.svelte';
+	import { getTTLs } from '$lib/helper/form.js';
 
 	const { data }: { data: PageData } = $props();
 	let links = $state(data.links);
@@ -33,6 +27,10 @@
 
 	const removeLink = (key: string) => {
 		links = links.filter((l) => l.key !== key);
+	};
+
+	const isLoggedIn = (user: PageData['user'] | null | undefined): boolean => {
+		return user != null && !user.temp;
 	};
 </script>
 
@@ -57,12 +55,9 @@
 			<InputFrame>
 				<Input name="link" placeholder="Enter link to shorten" autocomplete="off" />
 				<Select name="ttl">
-					<option value={HOUR_IN_MS}>a hour</option>
-					<option value={DAY_IN_MS}>a day</option>
-					<option value={WEEK_IN_MS}>a week</option>
-					<option value={MONTH_IN_MS}>a month</option>
-					<option value={YEAR_IN_MS}>a year</option>
-					<option value={-1}>for ever</option>
+					{#each getTTLs(isLoggedIn(data.user)) as [time, text]}
+						<option value={time}>{text}</option>
+					{/each}
 				</Select>
 				<IconButton type="submit">
 					<LinkIcon size={16} />
