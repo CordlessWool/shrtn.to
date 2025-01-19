@@ -1,11 +1,12 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { LayoutData } from './$types';
+	import Header from '$lib/comp/Header.svelte';
 
 	const { children, data }: { children: Snippet; data: LayoutData } = $props();
 </script>
 
-<header>
+<Header>
 	{#if !data.user || data.user.temp}
 		<a href="/login">Add links to your account</a>
 	{:else}
@@ -13,15 +14,11 @@
 			<button type="submit">Sign out</button>
 		</form>
 	{/if}
-</header>
+</Header>
 
 {@render children()}
 
 <style lang="postcss">
-	header {
-		@apply flex justify-end gap-3 p-3;
-	}
-
 	a {
 		@apply text-zinc-400;
 	}

@@ -5,7 +5,8 @@
 body {
 	@apply font-mono;
 	@apply flex flex-col;
-	@apply bg-zinc-800 text-zinc-200;
+	@apply dark:bg-zinc-800 dark:text-zinc-200;
+	@apply bg-zinc-100 text-zinc-800;
 	@apply mx-auto min-h-screen max-w-5xl;
 }
 

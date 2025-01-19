@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import IconButton from '$lib/comp/IconButton.svelte';
+	import Button from '$lib/comp/Button.svelte';
 	import Input from '$lib/comp/Input.svelte';
 	import InputFrame from '$lib/comp/InputFrame.svelte';
 	import LinkTile from '$lib/comp/LinkTile.svelte';
@@ -59,9 +59,9 @@
 						<option value={time}>{text}</option>
 					{/each}
 				</Select>
-				<IconButton type="submit">
+				<Button type="submit">
 					<LinkIcon size={16} />
-				</IconButton>
+				</Button>
 			</InputFrame>
 		</form>
 		{#if data}

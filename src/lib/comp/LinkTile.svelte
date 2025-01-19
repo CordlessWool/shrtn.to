@@ -3,7 +3,7 @@
 	import { PUBLIC_BASE_URL } from '$env/static/public';
 	import { onMount } from 'svelte';
 	import { Copy, Trash2 } from 'lucide-svelte';
-	import IconButton from './IconButton.svelte';
+	import Button from './Button.svelte';
 	import { enhance } from '$app/forms';
 	import { slide } from 'svelte/transition';
 
@@ -68,9 +68,9 @@
 		Expires in ~ {expiresText}
 	</small>
 	<div class="actions">
-		<IconButton onclick={() => navigator.clipboard.writeText(shrtnUrl.href)}>
+		<Button onclick={() => navigator.clipboard.writeText(shrtnUrl.href)}>
 			<Copy size={20} />
-		</IconButton>
+		</Button>
 		{#if deletePath}
 			<form
 				method="POST"
@@ -84,9 +84,9 @@
 					};
 				}}
 			>
-				<IconButton submit>
+				<Button submit>
 					<Trash2 size={20} />
-				</IconButton>
+				</Button>
 				<input name="key" value={key} hidden />
 			</form>
 		{/if}
@@ -96,8 +96,12 @@
 <style lang="postcss">
 	section {
 		@apply grid grid-flow-col grid-cols-3 grid-rows-3 items-center gap-x-3;
-		@apply w-full rounded-md bg-zinc-700 p-3;
+		@apply w-full rounded-md bg-zinc-200 p-3;
 		grid-template-columns: auto 1fr auto;
+	}
+
+	:global(.dark) section {
+		@apply bg-zinc-700;
 	}
 
 	img {

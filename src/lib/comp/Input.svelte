@@ -7,7 +7,7 @@
 <style lang="postcss">
 	input {
 		all: unset;
-		@apply w-full border-0 bg-transparent py-3;
+		@apply w-full border-0 bg-transparent py-1;
 		@apply outline-none focus:ring-0;
 	}
 </style>
