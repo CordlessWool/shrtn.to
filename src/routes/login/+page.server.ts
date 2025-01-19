@@ -5,6 +5,8 @@ import type { Actions } from './$types';
 import { nanoid } from 'nanoid';
 import { eq } from 'drizzle-orm';
 import { PUBLIC_BASE_URL } from '$env/static/public';
+import { fail, redirect } from '@sveltejs/kit';
+import * as auth from '$lib/server/auth';
 
 const HOUR_IN_MS = 3600000;
 const EXPIRE_IN_HOURS = 3;
@@ -64,12 +66,21 @@ export const actions = {
 		Hello there!
 
 		Click the link below to login:
-		${magicLinkUrl.toString()}
+		${magicLinkUrl.href}
 
 		The link will expire in ${EXPIRE_IN_HOURS} hours.
 		`
 		);
 		// send email
 		return { success: true };
+	},
+	logout: (event) => {
+		if (!event.locals.session) {
+			return fail(401);
+		}
+		auth.invalidateSession(event.locals.session.id);
+		auth.deleteSessionTokenCookie(event);
+
+		return redirect(302, '/');
 	}
 } satisfies Actions;

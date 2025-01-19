@@ -3,7 +3,7 @@ import { env } from '$env/dynamic/public';
 import { nanoid } from 'nanoid';
 import { db, schema } from '$lib/server/db';
 import { error, redirect } from '@sveltejs/kit';
-import { getMaxTTL, getNumber, getString, getTTLs, getURL } from '$lib/helper/form';
+import { getMaxTTL, getNumber, getString, getURL } from '$lib/helper/form';
 import { createAndLoginTempUser } from '$lib/helper/auth.server';
 import { and, eq } from 'drizzle-orm';
 import { HOUR_IN_MS, type Link } from '$lib/definitions';
