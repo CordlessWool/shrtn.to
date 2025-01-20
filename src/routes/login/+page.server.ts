@@ -4,7 +4,7 @@ import { mail } from '$lib/server/mail';
 import type { Actions } from './$types';
 import { nanoid } from 'nanoid';
 import { eq } from 'drizzle-orm';
-import { PUBLIC_BASE_URL } from '$env/static/public';
+import { env } from '$env/dynamic/public';
 import { fail, redirect } from '@sveltejs/kit';
 import * as auth from '$lib/server/auth';
 
@@ -58,7 +58,7 @@ export const actions = {
 				}
 			])
 			.run();
-		const magicLinkUrl = new URL(`login/${magicid}`, PUBLIC_BASE_URL);
+		const magicLinkUrl = new URL(`login/${magicid}`, env.PUBLIC_BASE_URL);
 		mail(
 			email,
 			'Your login link',

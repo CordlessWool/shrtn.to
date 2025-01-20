@@ -67,7 +67,7 @@ const isTTLStep = (ttl: string): ttl is keyof typeof TTL_STEPS => {
 };
 
 const getTTLTempUser = (): [number, string][] => {
-	const TTL_TEMP = env.PUBLIC_TTL_TEMP.toUpperCase();
+	const TTL_TEMP = env.PUBLIC_TTL_TEMP?.toUpperCase() ?? 'WEEK';
 	if (TTL_TEMP && isTTLStep(TTL_TEMP)) {
 		return TTLs.slice(0, TTL_STEPS[TTL_TEMP] + 1) as [number, string][];
 	} else {
@@ -76,7 +76,7 @@ const getTTLTempUser = (): [number, string][] => {
 };
 
 const getTTLUser = (): [number, string][] => {
-	const TTL_USER = env.PUBLIC_TTL_USER.toUpperCase();
+	const TTL_USER = env.PUBLIC_TTL_USER?.toUpperCase() ?? 'EVER';
 	if (TTL_USER && isTTLStep(TTL_USER)) {
 		return TTLs.slice(0, TTL_STEPS[TTL_USER] + 1) as [number, string][];
 	} else {

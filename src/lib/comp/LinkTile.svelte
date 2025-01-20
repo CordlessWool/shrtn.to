@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { Link } from '$lib/definitions.js';
-	import { PUBLIC_BASE_URL } from '$env/static/public';
+	import { env } from '$env/dynamic/public';
 	import { onMount } from 'svelte';
 	import { Copy, Trash2 } from 'lucide-svelte';
 	import Button from './Button.svelte';
@@ -13,7 +13,7 @@
 	};
 
 	const { url, key, expiresAt, deletePath, ondeleted }: Props = $props();
-	const shrtnUrl = new URL(key, PUBLIC_BASE_URL);
+	const shrtnUrl = new URL(key, env.PUBLIC_BASE_URL);
 	const { hostname } = new URL(url);
 	const favicon = `https://icons.duckduckgo.com/ip3/${hostname}.ico`;
 
