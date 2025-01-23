@@ -12,7 +12,7 @@ RUN cd /temp/dev && bun install --frozen-lockfile
 
 # install with --production (exclude devDependencies)
 RUN mkdir -p /temp/prod
-COPY package.json bun.lockb /temp/prod/
+COPY package.json bun.lock /temp/prod/
 RUN cd /temp/prod && bun install --frozen-lockfile --production
 
 # copy node_modules from temp directory
@@ -32,9 +32,9 @@ COPY --from=install /temp/prod/node_modules node_modules
 COPY --from=prerelease /usr/src/app/build .
 COPY --from=prerelease /usr/src/app/package.json .
 
-ENV DATABASE_URL=container.db
+ENV DATABASE_URL=shrt-container.db
 
 # run the app
 USER bun
-EXPOSE 7733/tcp
-ENTRYPOINT [ "bun", "--bun" "run", "./build/index.js" ]
+EXPOSE 3000/tcp
+ENTRYPOINT [ "bun", "--bun", "./build/index.js" ]
