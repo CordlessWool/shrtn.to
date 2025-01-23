@@ -9,6 +9,8 @@ jobs:
   build:
     name: Build and Upload
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
 
     steps:
       # Check out the repository
