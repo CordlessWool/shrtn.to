@@ -6,6 +6,7 @@
       "dependencies": {
         "@oslojs/crypto": "^1.0.1",
         "@oslojs/encoding": "^1.1.0",
+        "devalue": "^5.1.1",
         "drizzle-orm": "^0.38.4",
         "lucide-svelte": "^0.473.0",
         "nanoid": "^5.0.9",
