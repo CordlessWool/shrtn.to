@@ -29,7 +29,7 @@ jobs:
         run: bun --bun run build # Adjust the build command to suit your project
 
       - name: Zip file
-        run: zip -r artifact.zip package.json bun.lockb ./build
+        run: zip -r shrtn.zip package.json bun.lock ./drizzle drizzle.config.ts ./build/
 
       # Upload the build artifact
       - name: Create Release
@@ -49,6 +49,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./artifact.zip # Adjust this to your artifact path
-          asset_name: artifact.zip # Adjust the name as required
+          asset_path: ./shrtn.zip # Adjust this to your artifact path
+          asset_name: shrtn.zip # Adjust the name as required
           asset_content_type: application/zip
