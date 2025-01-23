@@ -1,0 +1,52 @@
+name: Build and Upload on Tag
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    name: Build and Upload
+    runs-on: ubuntu-latest
+
+    steps:
+      # Check out the repository
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Set up the required language/environment
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v2
+
+      # Install dependencies and build the project
+      - name: Install dependencies
+        run: bun install
+
+      - name: Build the project
+        run: bun --bun run build # Adjust the build command to suit your project
+
+      - name: Zip file
+        run: zip -r artifact.zip package.json bun.lockb ./build
+
+      # Upload the build artifact
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref_name }}
+          release_name: Release ${{ github.ref_name }}
+          draft: false
+          prerelease: false
+
+      - name: Upload Release Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./artifact.zip # Adjust this to your artifact path
+          asset_name: artifact.zip # Adjust the name as required
+          asset_content_type: application/zip
