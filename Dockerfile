@@ -28,6 +28,7 @@ RUN bun --bun run build
 
 # copy production dependencies and source code into final image
 FROM base AS release
+
 COPY --from=install /temp/prod/node_modules node_modules
 COPY --from=prerelease /usr/src/app/build .
 COPY --from=prerelease /usr/src/app/package.json .
@@ -37,4 +38,4 @@ ENV DATABASE_URL=shrt-container.db
 # run the app
 USER bun
 EXPOSE 3000/tcp
-ENTRYPOINT [ "bun", "--bun", "./build/index.js" ]
+ENTRYPOINT [ "bun", "--bun", "./index.js" ]
