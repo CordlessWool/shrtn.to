@@ -18,10 +18,10 @@
 		"db:studio": "drizzle-kit studio"
 	},
 	"devDependencies": {
-		"@changesets/cli": "^2.27.11",
+		"@changesets/cli": "^2.27.12",
 		"@eslint/compat": "^1.2.5",
 		"@eslint/js": "^9.18.0",
-		"@libsql/client": "^0.14.0",
+		"@sveltejs/adapter-node": "^5.2.12",
 		"@sveltejs/kit": "^2.16.1",
 		"@sveltejs/vite-plugin-svelte": "^5.0.3",
 		"@tailwindcss/forms": "^0.5.10",
@@ -35,9 +35,8 @@
 		"globals": "^15.14.0",
 		"prettier": "^3.4.2",
 		"prettier-plugin-svelte": "^3.3.3",
-		"prettier-plugin-tailwindcss": "^0.6.10",
+		"prettier-plugin-tailwindcss": "^0.6.11",
 		"svelte": "^5.19.2",
-		"svelte-adapter-bun": "^0.5.2",
 		"svelte-check": "^4.1.4",
 		"tailwindcss": "^3.4.17",
 		"typescript": "^5.7.3",
@@ -48,13 +47,11 @@
 	"dependencies": {
 		"@oslojs/crypto": "^1.0.1",
 		"@oslojs/encoding": "^1.1.0",
-		"cookie": "^1.0.2",
-		"devalue": "^5.1.1",
+		"better-sqlite3": "^11.8.1",
 		"drizzle-kit": "^0.30.2",
 		"drizzle-orm": "^0.38.4",
 		"lucide-svelte": "^0.473.0",
 		"nanoid": "^5.0.9",
-		"nodemailer": "^6.10.0",
-		"set-cookie-parser": "^2.7.1"
+		"nodemailer": "^6.10.0"
 	}
 }

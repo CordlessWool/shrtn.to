@@ -1,6 +1,5 @@
-import { drizzle } from 'drizzle-orm/bun-sqlite';
+import { drizzle } from 'drizzle-orm/better-sqlite3';
 import { building } from '$app/environment';
-import { Database } from 'bun:sqlite';
 import { env } from '$env/dynamic/private';
 export * as schema from './schema';
 
@@ -13,5 +12,4 @@ const getDatabaseURL = () => {
 	}
 	return env.DATABASE_URL;
 };
-const client = new Database(getDatabaseURL());
-export const db = drizzle(client);
+export const db = drizzle(getDatabaseURL());
