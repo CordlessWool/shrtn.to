@@ -29,7 +29,7 @@ jobs:
         run: bun --bun run build # Adjust the build command to suit your project
 
       - name: Zip file
-        run: zip -r shrtn.zip package.json bun.lock ./drizzle drizzle.config.ts ./build/
+        run: cd build && zip -r ../shrtn.zip * && cd .. && zip shrtn.zip ./package.json ./bun.lock ./drizzle ./drizzle.config.ts
 
       # Upload the build artifact
       - name: Create Release
