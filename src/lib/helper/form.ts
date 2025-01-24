@@ -16,7 +16,7 @@ export const getNumber = (
 };
 
 export const getURL = (value: string | FormDataEntryValue | null): string => {
-	if (value == null) {
+	if (value == null || value.toString().trim() === '') {
 		throw new Error('Value is required');
 	}
 

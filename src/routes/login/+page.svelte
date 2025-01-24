@@ -12,7 +12,7 @@
 		<form method="POST" use:enhance class="inputs">
 			<InputFrame for="mail" label="E-Mail" info="We will send you a link to login">
 				<Mail />
-				<Input id="mail" name="email" />
+				<Input id="mail" name="email" required minlength="3" />
 				<Button formaction="?/mail">
 					<LogIn size={16} />
 				</Button>

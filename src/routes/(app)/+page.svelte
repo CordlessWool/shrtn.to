@@ -35,8 +35,8 @@
 </script>
 
 <main>
-	<h1>shrtn.to</h1>
-	<p>A small easy to setup open-source link shortener.</p>
+	<h1>shrtn.io</h1>
+	<p>A small easy to setup open-source link shortener - <b>host your own</b>.</p>
 
 	<section class="links">
 		<form
@@ -53,7 +53,13 @@
 			action="?/add"
 		>
 			<InputFrame>
-				<Input name="link" placeholder="Enter link to shorten" autocomplete="off" />
+				<Input
+					name="link"
+					placeholder="Enter link to shorten"
+					autocomplete="off"
+					required
+					minlength="3"
+				/>
 				<Select name="ttl">
 					{#each getTTLs(isLoggedIn(data.user)) as [time, text]}
 						<option value={time}>{text}</option>
