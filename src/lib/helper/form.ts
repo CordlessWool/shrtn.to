@@ -36,7 +36,7 @@ const TTLs = [
 	[WEEK_IN_MS, 'a week'],
 	[MONTH_IN_MS, 'a month'],
 	[YEAR_IN_MS, 'a year'],
-	[Infinity, 'never']
+	[Infinity, 'for ever']
 ] as const;
 
 export const ttlFromStep = (step: TTL_STEPS): number => {
