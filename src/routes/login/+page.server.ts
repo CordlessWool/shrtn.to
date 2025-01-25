@@ -31,15 +31,17 @@ const getUserId = (email: string, userId: string | null | undefined): string => 
 		return userId;
 	} else {
 		const id = nanoid(20);
-		db.insert(schema.user).values([
-			{
-				id,
-				temp: true,
-				email: email.toLowerCase(),
-				createdAt: new Date(),
-				lastSeen: new Date()
-			}
-		]);
+		db.insert(schema.user)
+			.values([
+				{
+					id,
+					temp: true,
+					email: email.toLowerCase(),
+					createdAt: new Date(),
+					lastSeen: new Date()
+				}
+			])
+			.run();
 		return id;
 	}
 };
@@ -66,7 +68,7 @@ export const actions = {
 				.run();
 			const magicLinkUrl = new URL(`login/${magicid}`, env.PUBLIC_BASE_URL);
 
-			mail(
+			await mail(
 				email,
 				'Your login link',
 				`
