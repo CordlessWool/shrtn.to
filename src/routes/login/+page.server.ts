@@ -1,12 +1,14 @@
-import { getString } from '$lib/helper/form';
 import { db, schema } from '$lib/server/db';
 import { mail } from '$lib/server/mail';
 import type { Actions } from './$types';
 import { nanoid } from 'nanoid';
 import { eq } from 'drizzle-orm';
 import { env } from '$env/dynamic/public';
-import { fail, redirect } from '@sveltejs/kit';
+import { error, fail, redirect } from '@sveltejs/kit';
 import * as auth from '$lib/server/auth';
+import { LoginMailSchema } from '$lib/helper/form';
+import { message, superValidate } from 'sveltekit-superforms';
+import { valibot } from 'sveltekit-superforms/adapters';
 
 const HOUR_IN_MS = 3600000;
 const EXPIRE_IN_HOURS = 3;
@@ -44,25 +46,30 @@ const getUserId = (email: string, userId: string | null | undefined): string => 
 
 export const actions = {
 	mail: async ({ request, locals }) => {
-		const data = await request.formData();
-		const email = getString(data.get('email'));
-		const userId = getUserId(email, locals.user?.id);
+		try {
+			const form = await superValidate(request, valibot(LoginMailSchema));
+			if (!form.valid) {
+				return fail(400, { form });
+			}
+			const { email } = form.data;
+			const userId = getUserId(email, locals.user?.id);
 
-		const magicid = nanoid(20);
-		db.insert(schema.magicLink)
-			.values([
-				{
-					id: magicid,
-					userId,
-					expiresAt: new Date(Date.now() + EXPIRE_IN_MS)
-				}
-			])
-			.run();
-		const magicLinkUrl = new URL(`login/${magicid}`, env.PUBLIC_BASE_URL);
-		mail(
-			email,
-			'Your login link',
-			`
+			const magicid = nanoid(20);
+			db.insert(schema.magicLink)
+				.values([
+					{
+						id: magicid,
+						userId,
+						expiresAt: new Date(Date.now() + EXPIRE_IN_MS)
+					}
+				])
+				.run();
+			const magicLinkUrl = new URL(`login/${magicid}`, env.PUBLIC_BASE_URL);
+
+			mail(
+				email,
+				'Your login link',
+				`
 		Hello there!
 
 		Click the link below to login:
@@ -70,9 +77,13 @@ export const actions = {
 
 		The link will expire in ${EXPIRE_IN_HOURS} hours.
 		`
-		);
-		// send email
-		return { success: true };
+			);
+			// send email
+			return message(form, 'Mail sent');
+		} catch (e) {
+			console.error(e);
+			error(500);
+		}
 	},
 	logout: (event) => {
 		if (!event.locals.session) {
