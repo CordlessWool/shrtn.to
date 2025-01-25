@@ -26,7 +26,7 @@ jobs:
         run: bun install
 
       - name: Build the project
-        run: bun --bun run build # Adjust the build command to suit your project
+        run: bun run build # Adjust the build command to suit your project
 
       - name: Zip file
         run: cd build && zip -r ../shrtn.zip * && cd .. && zip shrtn.zip ./package.json ./bun.lock ./drizzle ./drizzle.config.ts

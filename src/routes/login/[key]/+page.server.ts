@@ -3,6 +3,7 @@ import { eq, and, gte } from 'drizzle-orm';
 import type { PageServerLoad } from './$types';
 import { loginUser } from '$lib/helper/auth.server';
 import { error, redirect } from '@sveltejs/kit';
+import { invalidateSession } from '$lib/server/auth';
 
 export const load: PageServerLoad = async (event) => {
 	const { key } = event.params;
@@ -34,6 +35,9 @@ export const load: PageServerLoad = async (event) => {
 			.set({ userId: user.id })
 			.where(eq(schema.link.userId, locals.user.id))
 			.run();
+		if (locals.session) {
+			invalidateSession(locals.session.id);
+		}
 		db.delete(schema.user).where(eq(schema.user.id, locals.user.id)).run();
 	}
 	db.delete(schema.magicLink).where(eq(schema.magicLink.id, key)).run();

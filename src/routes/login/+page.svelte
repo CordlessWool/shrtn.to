@@ -3,17 +3,39 @@
 	import Input from '$lib/comp/Input.svelte';
 	import Button from '$lib/comp/Button.svelte';
 	import { LogIn, Mail } from 'lucide-svelte';
-	import { enhance } from '$app/forms';
+	import type { PageData } from './$types';
+	import { superForm } from 'sveltekit-superforms/client';
+	import { valibotClient } from 'sveltekit-superforms/adapters';
+	import { LoginMailSchema } from '$lib/helper/form';
+	import { goto } from '$app/navigation';
+	import { onMount } from 'svelte';
+
+	const { data }: { data: PageData } = $props();
+
+	onMount(() => {
+		if (data.user && !data.user.temp) {
+			goto('/');
+		}
+	});
+
+	const { form, errors, enhance } = superForm(data.form, {
+		validators: valibotClient(LoginMailSchema)
+	});
 </script>
 
 <main>
 	<section>
 		<h1>Login</h1>
-		<form method="POST" use:enhance class="inputs">
-			<InputFrame for="mail" label="E-Mail" info="We will send you a link to login">
+		<form method="POST" use:enhance action="?/mail" class="inputs">
+			<InputFrame
+				for="mail"
+				label="E-Mail"
+				info="We will send you a link to login"
+				error={$errors.email?.[0]}
+			>
 				<Mail />
-				<Input id="mail" name="email" required minlength="3" />
-				<Button formaction="?/mail">
+				<Input id="mail" name="email" bind:value={$form.email} />
+				<Button type="submit">
 					<LogIn size={16} />
 				</Button>
 			</InputFrame>

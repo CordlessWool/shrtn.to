@@ -19,10 +19,10 @@
 	<div class="inputs">
 		{@render children()}
 	</div>
-	{#if info}
-		<small>{info}</small>
-	{:else if error}
+	{#if error}
 		<small>{error}</small>
+	{:else if info}
+		<small>{info}</small>
 	{:else}
 		<small>&nbsp;</small>
 	{/if}

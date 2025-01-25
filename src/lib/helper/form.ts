@@ -1,31 +1,17 @@
-import { env } from '$env/dynamic/public';
-import { DAY_IN_MS, HOUR_IN_MS, MONTH_IN_MS, WEEK_IN_MS, YEAR_IN_MS } from '$lib/definitions';
+import {
+	DAY_IN_MS,
+	HOUR_IN_MS,
+	MAX_TTL_TEMP,
+	MAX_TTL_USER,
+	MONTH_IN_MS,
+	TTL_STEPS,
+	WEEK_IN_MS,
+	YEAR_IN_MS,
+	SHORTEN_LENGTH
+} from '$lib/helper/defaults';
+import { nanoid } from 'nanoid';
 
-export const getNumber = (
-	value: string | FormDataEntryValue | null,
-	defaultValue?: number
-): number => {
-	const number = Number(value);
-	if (number) {
-		return number;
-	} else if (defaultValue) {
-		return defaultValue;
-	}
-
-	throw new Error('Value is required');
-};
-
-export const getURL = (value: string | FormDataEntryValue | null): string => {
-	if (value == null || value.toString().trim() === '') {
-		throw new Error('Value is required');
-	}
-
-	const url = String(value);
-	if (url.match(/^[A-Za-z]+:\/\//)) {
-		return url;
-	}
-	return `https://${url}`;
-};
+import * as v from 'valibot';
 
 export const getString = (
 	value: string | FormDataEntryValue | null,
@@ -44,44 +30,53 @@ export const getString = (
 	throw new Error('Value is required');
 };
 
-enum TTL_STEPS {
-	HOUR,
-	DAY,
-	WEEK,
-	MONTH,
-	YEAR,
-	EVER
-}
-
 const TTLs = [
 	[HOUR_IN_MS, 'a hour'],
 	[DAY_IN_MS, 'a day'],
 	[WEEK_IN_MS, 'a week'],
 	[MONTH_IN_MS, 'a month'],
 	[YEAR_IN_MS, 'a year'],
-	[-1, 'never']
-];
+	[Infinity, 'never']
+] as const;
 
-const isTTLStep = (ttl: string): ttl is keyof typeof TTL_STEPS => {
-	return ttl in TTL_STEPS;
+export const ttlFromStep = (step: TTL_STEPS): number => {
+	return TTLs[step][0];
 };
 
-const getTTLTempUser = (): [number, string][] => {
-	const TTL_TEMP = env.PUBLIC_TTL_TEMP?.toUpperCase() ?? 'WEEK';
-	if (TTL_TEMP && isTTLStep(TTL_TEMP)) {
-		return TTLs.slice(0, TTL_STEPS[TTL_TEMP] + 1) as [number, string][];
-	} else {
-		return TTLs.slice(0, TTL_STEPS.WEEK + 1) as [number, string][];
-	}
+const ttlMapFromStep = (step: TTL_STEPS): [number, string][] => {
+	return TTLs.slice(0, step + 1) as [number, string][];
 };
+const getTTLTempUser = (): [number, string][] => ttlMapFromStep(MAX_TTL_TEMP);
+const getTTLUser = (): [number, string][] => ttlMapFromStep(MAX_TTL_USER);
 
-const getTTLUser = (): [number, string][] => {
-	const TTL_USER = env.PUBLIC_TTL_USER?.toUpperCase() ?? 'EVER';
-	if (TTL_USER && isTTLStep(TTL_USER)) {
-		return TTLs.slice(0, TTL_STEPS[TTL_USER] + 1) as [number, string][];
-	} else {
-		return TTLs.slice(0, TTL_STEPS.EVER + 1) as [number, string][];
-	}
-};
 export const getTTLs = (loggedin: boolean) => (loggedin ? getTTLUser() : getTTLTempUser());
-export const getMaxTTL = (loggedin: boolean) => getTTLs(loggedin)[getTTLs(loggedin).length - 1][0];
+
+export const LinkSchemaSignedUp = v.object({
+	link: v.pipe(v.string(), v.minLength(2)),
+	ttl: v.pipe(v.optional(v.number(), HOUR_IN_MS), v.maxValue(ttlFromStep(MAX_TTL_USER))),
+	short: v.pipe(
+		v.optional(v.string(), () => nanoid(SHORTEN_LENGTH)),
+		v.minLength(SHORTEN_LENGTH)
+	)
+});
+
+export const LinkSchemaTemp = v.object({
+	link: v.pipe(
+		v.string(),
+		v.minLength(2),
+		v.trim(),
+		v.transform((url) => (url.match(/^[A-Za-z]+:\/\//) ? url : `https://${url}`)),
+		v.url()
+	),
+	ttl: v.pipe(v.optional(v.number(), HOUR_IN_MS), v.maxValue(ttlFromStep(MAX_TTL_TEMP))),
+	short: v.pipe(
+		v.fallback(v.pipe(v.string(), v.trim(), v.minLength(1)), () => nanoid(SHORTEN_LENGTH))
+	)
+});
+
+export const getLinkSchema = (loggedin: boolean) =>
+	loggedin ? LinkSchemaSignedUp : LinkSchemaTemp;
+
+export const LoginMailSchema = v.object({
+	email: v.pipe(v.string(), v.trim(), v.email())
+});

@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { enhance } from '$app/forms';
 	import Button from '$lib/comp/Button.svelte';
 	import Input from '$lib/comp/Input.svelte';
 	import InputFrame from '$lib/comp/InputFrame.svelte';
@@ -8,10 +7,29 @@
 	import { Link as LinkIcon } from 'lucide-svelte';
 	import type { PageData } from './$types.js';
 	import Select from '$lib/comp/Select.svelte';
-	import { getTTLs } from '$lib/helper/form.js';
+	import { getLinkSchema, getTTLs } from '$lib/helper/form.js';
+	import { valibotClient } from 'sveltekit-superforms/adapters';
+	import { superForm } from 'sveltekit-superforms';
+	import { SHORTEN_LENGTH } from '$lib/helper/defaults.js';
+	import { nanoid } from 'nanoid';
 
 	const { data }: { data: PageData } = $props();
 	let links = $state(data.links);
+	const isLoggedIn = (user: PageData['user'] | null | undefined): boolean => {
+		return user != null && !user.temp;
+	};
+	const { form, errors, enhance } = superForm(data.form, {
+		validators: valibotClient(getLinkSchema(isLoggedIn(data.user))),
+		onResult: async ({ result, cancel }) => {
+			if (result.type === 'redirect') {
+				const data = await loadLink(result.location);
+				addLink(data);
+				$form.link = '';
+				$form.short = nanoid(SHORTEN_LENGTH);
+				cancel();
+			}
+		}
+	});
 
 	const addLink = (link: Link) => {
 		links.push({
@@ -28,10 +46,6 @@
 	const removeLink = (key: string) => {
 		links = links.filter((l) => l.key !== key);
 	};
-
-	const isLoggedIn = (user: PageData['user'] | null | undefined): boolean => {
-		return user != null && !user.temp;
-	};
 </script>
 
 <main>
@@ -39,26 +53,13 @@
 	<p>A small easy to setup open-source link shortener - <b>host your own</b>.</p>
 
 	<section class="links">
-		<form
-			method="POST"
-			use:enhance={({ formElement }) => {
-				return async ({ result }) => {
-					if (result.type === 'redirect') {
-						const data = await loadLink(result.location);
-						addLink(data);
-						formElement.reset();
-					}
-				};
-			}}
-			action="?/add"
-		>
-			<InputFrame>
+		<form method="POST" use:enhance action="?/add">
+			<InputFrame error={$errors.link?.[0] || $errors.ttl?.[0] || $errors.short?.[0]}>
 				<Input
 					name="link"
 					placeholder="Enter link to shorten"
 					autocomplete="off"
-					required
-					minlength="3"
+					bind:value={$form.link}
 				/>
 				<Select name="ttl">
 					{#each getTTLs(isLoggedIn(data.user)) as [time, text]}

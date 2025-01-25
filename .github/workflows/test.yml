@@ -11,4 +11,4 @@ jobs:
 
       # run any `bun` or `bunx` command
       - run: bun install
-      - run: bun --bun run build
+      - run: bun run build
