@@ -1,24 +1,19 @@
 import type { Actions, PageServerLoad } from './$types';
-import { env } from '$env/dynamic/public';
-import { nanoid } from 'nanoid';
+import { fail, superValidate } from 'sveltekit-superforms';
+import { valibot } from 'sveltekit-superforms/adapters';
 import { db, schema } from '$lib/server/db';
 import { error, redirect } from '@sveltejs/kit';
-import { getMaxTTL, getNumber, getString, getURL } from '$lib/helper/form';
+import { getLinkSchema, getString } from '$lib/helper/form';
 import { createAndLoginTempUser } from '$lib/helper/auth.server';
 import { and, eq } from 'drizzle-orm';
-import { HOUR_IN_MS, type Link } from '$lib/definitions';
 
-const idLength = Number(env.PUBLIC_ID_LENGTH ?? 5);
-
-type LoadData = {
-	links: Link[];
-};
-
-export const load: PageServerLoad = ({ locals }) => {
+export const load: PageServerLoad = async ({ locals }) => {
+	const form = superValidate(valibot(getLinkSchema(!!locals.user && !locals.user.temp)));
 	if (!locals.user) {
 		return {
-			links: []
-		} satisfies LoadData;
+			links: [],
+			form: await form
+		};
 	}
 	const data = db
 		.select({
@@ -30,9 +25,11 @@ export const load: PageServerLoad = ({ locals }) => {
 		.from(schema.link)
 		.where(eq(schema.link.userId, locals.user.id))
 		.all();
+
 	return {
-		links: data
-	} satisfies LoadData;
+		links: data,
+		form: await form
+	};
 };
 
 export const actions = {
@@ -45,15 +42,16 @@ export const actions = {
 			({ user } = createAndLoginTempUser(event));
 		}
 
-		const data = await request.formData();
-		const url: string = getURL(data.get('link'));
-		const short: string = getString(data.get('short'), () => nanoid(idLength));
-		const ttl: number = getNumber(data.get('ttl'), HOUR_IN_MS);
-		const expiresAt = ttl === -1 ? null : new Date(Date.now() + ttl);
+		const LinkSchema = getLinkSchema(!user.temp);
+		const form = await superValidate(request, valibot(LinkSchema));
 
-		if (ttl > getMaxTTL(!user.temp)) {
-			return error(400, 'TTL too high');
+		if (!form.valid) {
+			return fail(400, { form });
 		}
+
+		const { ttl, link: url, short } = form.data;
+		const expiresAt = ttl === Infinity ? null : new Date(Date.now() + ttl);
+
 		db.insert(schema.link)
 			.values([
 				{

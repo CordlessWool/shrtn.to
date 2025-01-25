@@ -1,8 +1,8 @@
 <script>
-	const { ...props } = $props();
+	let { value = $bindable(), ...props } = $props();
 </script>
 
-<input {...props} />
+<input bind:value {...props} />
 
 <style lang="postcss">
 	input {
