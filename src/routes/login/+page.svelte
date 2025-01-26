@@ -19,6 +19,7 @@
 	});
 
 	const { form, errors, enhance } = superForm(data.form, {
+		applyAction: true,
 		validators: valibotClient(LoginMailSchema)
 	});
 </script>

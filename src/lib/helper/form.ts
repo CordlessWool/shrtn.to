@@ -80,3 +80,7 @@ export const getLinkSchema = (loggedin: boolean) =>
 export const LoginMailSchema = v.object({
 	email: v.pipe(v.string(), v.trim(), v.email())
 });
+
+export const VerificationSchema = v.object({
+	key: v.pipe(v.string(), v.trim(), v.length(4), v.toLowerCase())
+});

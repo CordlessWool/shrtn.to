@@ -1,7 +1,7 @@
 import { db, schema } from '$lib/server/db';
-import { nanoid } from 'nanoid';
 import * as auth from '$lib/server/auth';
 import type { RequestEvent } from '@sveltejs/kit';
+import { createUUID } from './identifiers';
 
 export const createAndLoginTempUser = (event: RequestEvent) => {
 	const userId = createUUID();

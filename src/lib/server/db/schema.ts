@@ -15,6 +15,7 @@ export const magicLink = sqliteTable('magic_link', {
 	userId: text('user_id')
 		.notNull()
 		.references(() => user.id),
+	verification: text('verification').notNull(),
 	expiresAt: integer('expires_at', { mode: 'timestamp' }).notNull()
 });
 

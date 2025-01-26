@@ -1,0 +1,1 @@
+ALTER TABLE `magic_link` ADD `verification` text NOT NULL;

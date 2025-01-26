@@ -36,6 +36,13 @@
       "when": 1737120602676,
       "tag": "0004_magic-link",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "6",
+      "when": 1737844074821,
+      "tag": "0005_giant_speedball",
+      "breakpoints": true
     }
   ]
 }
