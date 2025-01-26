@@ -49,6 +49,5 @@ export const sendVerificationMail = async (to: string, key: string, theme: THEME
 		key
 	});
 	const htmlWithInlineStyles = juice(html);
-	console.log(htmlWithInlineStyles);
 	await mail(to, 'Verification', 'Please verify your email', htmlWithInlineStyles);
 };
