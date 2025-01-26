@@ -15,7 +15,7 @@
 	<h1 class="mb-4 text-2xl font-bold">Enter verification key</h1>
 	<p class="mb-6 text-lg">Please enter the 4-character key that was sent to your email.</p>
 	<form class="flex flex-col items-center gap-7" action="?/verify" method="POST" use:enhance>
-		<InputFrame error={$errors.key ? 'Invalid key' : undefined}>
+		<InputFrame error={$errors.key?.[0]}>
 			<KeyInput type="text" name="key" length={4} bind:value={$form.key} />
 		</InputFrame>
 		<Button class="text-lg"><ShieldCheck />Verify</Button>

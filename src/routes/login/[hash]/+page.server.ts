@@ -5,7 +5,7 @@ import { loginUser } from '$lib/helper/auth.server';
 import { error, redirect } from '@sveltejs/kit';
 import { invalidateSession } from '$lib/server/auth';
 import { VerificationSchema } from '$lib/helper/form';
-import { fail, message, superValidate } from 'sveltekit-superforms';
+import { fail, setError, superValidate } from 'sveltekit-superforms';
 import { valibot } from 'sveltekit-superforms/adapters';
 
 export const actions = {
@@ -35,7 +35,8 @@ export const actions = {
 			.get();
 
 		if (!user) {
-			return message(form, 'Invalid key');
+			setError(form, 'key', 'Invalid key');
+			return fail(400, { form });
 		}
 
 		if (locals.user?.temp === false && locals.user?.id !== user.id) {

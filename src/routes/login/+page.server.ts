@@ -1,5 +1,5 @@
 import { db, schema } from '$lib/server/db';
-import { mail } from '$lib/server/mail';
+import { mail, sendVerificationMail } from '$lib/server/mail';
 import type { Actions } from './$types';
 import { customAlphabet } from 'nanoid';
 import { eq } from 'drizzle-orm';
@@ -69,17 +69,8 @@ export const actions = {
 			])
 			.run();
 		try {
-			await mail(
-				email,
-				'Your login link',
-				`
-	Welcome to Shrtn!
-
-	Here is your login key: ${verification}
-	Enter this key on the site opend after you enter your email. This key will only work on this site.
-		`
-			);
-			// send email
+			//send mail
+			await sendVerificationMail(email, verification);
 		} catch (e) {
 			console.error(e);
 			error(500);

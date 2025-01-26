@@ -16,6 +16,11 @@ export enum TTL_STEPS {
 	EVER
 }
 
+export enum THEME {
+	DARK,
+	LIGHT
+}
+
 const toTTLSTEP = (step: unknown, defaultValue: TTL_STEPS): TTL_STEPS => {
 	if (typeof step !== 'string') {
 		return defaultValue;

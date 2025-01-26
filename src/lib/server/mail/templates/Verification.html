@@ -1,0 +1,57 @@
+<!doctype html>
+<html>
+	<head>
+		<style>
+			body {
+				font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono',
+					'Courier New', monospace;
+				margin: 0;
+				padding: 0;
+			}
+			.container {
+				width: 100%;
+				max-width: 600px;
+				padding: 20px;
+				border-radius: 8px;
+				margin: 0 auto;
+				color: {{color}};
+				background-color: {{bg}};
+
+			}
+			.header {
+				padding: 10px;
+				text-align: center;
+				border-radius: 8px 8px 0 0;
+			}
+			.content {
+				padding: 16px;
+				border-radius: 8px;
+				border: 1px;
+				border-color: rgb({{accent.r}}, {{accent.g}}, {{accent.b}});
+				box-shadow: 0 0 10px rgba({{accent.r}}, {{accent.g}}, {{accent.b}}, 0.3);
+				/* text-align: center; */
+			}
+
+			.code {
+				font-size: 36px;
+				font-weight: bold;
+				text-align: center;
+				letter-spacing: 7px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="container">
+			<div class="header">
+				<h1>Welcome to shrtn</h1>
+			</div>
+			<div class="content">
+				<p>
+					Please enter the following key on the site opened after entering your email. This key will
+					only work on this site.
+				</p>
+				<p class="code">{{key}}</p>
+			</div>
+		</div>
+	</body>
+</html>
