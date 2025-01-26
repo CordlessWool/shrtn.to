@@ -9,6 +9,7 @@ import * as auth from '$lib/server/auth';
 import { LoginMailSchema } from '$lib/helper/form';
 import { message, superValidate } from 'sveltekit-superforms';
 import { valibot } from 'sveltekit-superforms/adapters';
+import { createUUID } from '$lib/helper/identifiers';
 
 const HOUR_IN_MS = 3600000;
 const EXPIRE_IN_HOURS = 3;
@@ -30,7 +31,7 @@ const getUserId = (email: string, userId: string | null | undefined): string => 
 			.run();
 		return userId;
 	} else {
-		const id = nanoid(20);
+		const id = createUUID();
 		db.insert(schema.user)
 			.values([
 				{
@@ -56,7 +57,7 @@ export const actions = {
 			const { email } = form.data;
 			const userId = getUserId(email, locals.user?.id);
 
-			const magicid = nanoid(20);
+			const magicid = createUUID();
 			db.insert(schema.magicLink)
 				.values([
 					{
