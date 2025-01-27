@@ -9,6 +9,7 @@
 	import { LoginMailSchema } from '$lib/helper/form';
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
+	import { theme } from '$lib/stores';
 
 	const { data }: { data: PageData } = $props();
 
@@ -40,7 +41,7 @@
 					<LogIn size={16} />
 				</Button>
 			</InputFrame>
-			<div></div>
+			<input type="hidden" name="theme" value={$theme} />
 		</form>
 	</section>
 </main>
@@ -48,7 +49,6 @@
 <style lang="postcss">
 	main {
 		@apply flex flex-col items-center justify-center gap-3 p-3 md:p-7;
-		@apply bg-zinc-800 text-zinc-200;
 	}
 
 	h1 {
@@ -56,7 +56,13 @@
 	}
 
 	.inputs {
-		@apply rounded-md border-2 border-zinc-700;
+		@apply rounded-md border-2 border-zinc-300;
 		@apply p-3;
+	}
+
+	:global(.dark) {
+		.inputs {
+			@apply border-zinc-700;
+		}
 	}
 </style>

@@ -78,7 +78,8 @@ export const getLinkSchema = (loggedin: boolean) =>
 	loggedin ? LinkSchemaSignedUp : LinkSchemaTemp;
 
 export const LoginMailSchema = v.object({
-	email: v.pipe(v.string(), v.trim(), v.email())
+	email: v.pipe(v.string(), v.trim(), v.email()),
+	theme: v.optional(v.number())
 });
 
 export const VerificationSchema = v.object({

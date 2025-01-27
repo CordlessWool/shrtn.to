@@ -1,11 +1,14 @@
 <script lang="ts">
 	import type { Action } from 'svelte/action';
 	import { Sun, Moon } from 'lucide-svelte';
+	import { theme as themeStore } from '$lib/stores';
 
 	const darkLightModeAction: Action = (node) => {
 		const toggle = () => {
 			document.documentElement.classList.toggle('dark');
-			localStorage.theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+			const theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+			themeStore.set(theme);
+			localStorage.theme = theme;
 		};
 
 		node.addEventListener('click', toggle);
