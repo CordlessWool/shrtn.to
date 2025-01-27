@@ -62,7 +62,8 @@ export const actions = {
 					id: magicid,
 					userId,
 					expiresAt: new Date(Date.now() + HOUR_IN_MS),
-					verification
+					verification,
+					email
 				}
 			])
 			.run();

@@ -1,12 +1,33 @@
 import { db, schema } from '$lib/server/db';
 import { eq, and, gte } from 'drizzle-orm';
-import type { Actions } from './$types';
+import type { Actions, PageServerLoad } from './$types';
 import { loginUser } from '$lib/helper/auth.server';
 import { error, redirect } from '@sveltejs/kit';
 import { invalidateSession } from '$lib/server/auth';
 import { VerificationSchema } from '$lib/helper/form';
 import { fail, setError, superValidate } from 'sveltekit-superforms';
 import { valibot } from 'sveltekit-superforms/adapters';
+
+export const load: PageServerLoad = async (event) => {
+	const { locals, params } = event;
+	if (locals.user) {
+		redirect(302, '/');
+	}
+
+	const data = db
+		.select({
+			email: schema.magicLink.email,
+			expiresAt: schema.magicLink.expiresAt
+		})
+		.from(schema.magicLink)
+		.where(and(eq(schema.magicLink.id, params.hash), gte(schema.magicLink.expiresAt, new Date())))
+		.get();
+
+	if (data) {
+		return data;
+	}
+	redirect(302, '/login');
+};
 
 export const actions = {
 	verify: async (event) => {
