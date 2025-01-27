@@ -22,7 +22,7 @@ export const magicLink = sqliteTable(
 		email: text('email').notNull()
 	},
 	(table) => ({
-		expiresIdx: index('expires_idx').on(table.expiresAt)
+		expiresIdx: index('magic_expires_idx').on(table.expiresAt)
 	})
 );
 
@@ -46,7 +46,7 @@ export const link = sqliteTable(
 		expiresAt: integer('expires_at', { mode: 'timestamp' })
 	},
 	(table) => ({
-		expiresIdx: index('expires_idx').on(table.expiresAt)
+		expiresIdx: index('link_expires_idx').on(table.expiresAt)
 	})
 );
 

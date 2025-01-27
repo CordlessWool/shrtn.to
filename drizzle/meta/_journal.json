@@ -43,6 +43,13 @@
       "when": 1737844074821,
       "tag": "0005_giant_speedball",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "6",
+      "when": 1738000454018,
+      "tag": "0006_add-mail-to-megiclink",
+      "breakpoints": true
     }
   ]
 }
