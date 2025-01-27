@@ -53,7 +53,7 @@ export const actions = {
 		if (!form.valid) {
 			return fail(400, { form });
 		}
-		const { email } = form.data;
+		const { email, theme } = form.data;
 		const userId = getUserId(email, locals.user?.id);
 
 		const magicid = createUUID();
@@ -70,7 +70,7 @@ export const actions = {
 			.run();
 		try {
 			//send mail
-			await sendVerificationMail(email, verification);
+			await sendVerificationMail(email, verification, theme);
 		} catch (e) {
 			console.error(e);
 			error(500);

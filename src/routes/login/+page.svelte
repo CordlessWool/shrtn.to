@@ -41,7 +41,7 @@
 					<LogIn size={16} />
 				</Button>
 			</InputFrame>
-			<input type="hidden" name="theme" value={$theme} />
+			<input type="number" hidden name="theme" value={$theme} />
 		</form>
 	</section>
 </main>
