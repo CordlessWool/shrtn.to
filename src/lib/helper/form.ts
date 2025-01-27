@@ -85,3 +85,7 @@ export const LoginMailSchema = v.object({
 export const VerificationSchema = v.object({
 	key: v.pipe(v.string(), v.trim(), v.length(4), v.toLowerCase())
 });
+
+export const securitySleep = async (varity = 500, min = 200) => {
+	await new Promise((resolve) => setTimeout(resolve, Math.floor(Math.random() * varity) + min));
+};

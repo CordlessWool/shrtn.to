@@ -4,12 +4,13 @@ import type { Actions } from './$types';
 import { loginUser } from '$lib/helper/auth.server';
 import { error, redirect } from '@sveltejs/kit';
 import { invalidateSession } from '$lib/server/auth';
-import { VerificationSchema } from '$lib/helper/form';
+import { securitySleep, VerificationSchema } from '$lib/helper/form';
 import { fail, setError, superValidate } from 'sveltekit-superforms';
 import { valibot } from 'sveltekit-superforms/adapters';
 
 export const actions = {
 	verify: async (event) => {
+		await securitySleep();
 		const { locals, params, request } = event;
 		const { hash } = params;
 
