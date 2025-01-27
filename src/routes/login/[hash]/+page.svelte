@@ -8,7 +8,6 @@
 	const { data }: { data: PageData } = $props();
 
 	const { form, enhance, errors } = superForm(data.form);
-	errors.subscribe(console.log);
 </script>
 
 <main class="flex flex-col items-center justify-center">

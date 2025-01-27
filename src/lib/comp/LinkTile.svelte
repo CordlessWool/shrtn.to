@@ -77,7 +77,6 @@
 				action={deletePath}
 				use:enhance={() => {
 					return ({ result }) => {
-						console.log(result, key);
 						if (result.type === 'success') {
 							ondeleted(key);
 						}
