@@ -6,7 +6,7 @@
 	const { children, data }: { children: Snippet; data: LayoutData } = $props();
 </script>
 
-<Header>
+<Header showName={false}>
 	{#if !data.user || data.user.temp}
 		<a href="/login">Add links to your account</a>
 	{:else}
@@ -17,13 +17,3 @@
 </Header>
 
 {@render children()}
-
-<style lang="postcss">
-	a {
-		@apply text-zinc-400;
-	}
-
-	a:hover {
-		@apply text-zinc-300 underline underline-offset-2;
-	}
-</style>
