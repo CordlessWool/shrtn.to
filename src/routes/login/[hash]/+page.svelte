@@ -5,28 +5,20 @@
 	import Button from '$lib/comp/Button.svelte';
 	import { ShieldCheck, Send, Shell, CircleX } from 'lucide-svelte';
 	import InputFrame from '$lib/comp/InputFrame.svelte';
-	import { enhance as svelteEnhance } from '$app/forms';
-	import type { ActionResult } from '@sveltejs/kit';
 
 	const { data }: { data: PageData } = $props();
-
-	const { form, enhance: superEnhance, errors } = superForm(data.form);
-	const SEND = {
-		READY: 0,
-		SENDING: 1,
-		FAILED: 2
-	};
-	let mailStatus = $state(SEND.READY);
-
-	const handleSendResult = (result: ActionResult) => {
-		if (result.type === 'success') {
-			setTimeout(() => {
-				mailStatus = SEND.READY;
-			}, 11000);
-		} else if (result.type === 'error') {
-			mailStatus = SEND.FAILED;
+	let sendMailFailed = $state(false);
+	const {
+		form: verifyForm,
+		enhance: verifyEnhance,
+		errors: verifyErrors,
+		submitting: verifySubmitting
+	} = superForm(data.verificationForm);
+	const { enhance: resendEnhance, submitting: resendSubmitting } = superForm(data.resendForm, {
+		onError: () => {
+			sendMailFailed = true;
 		}
-	};
+	});
 </script>
 
 <main class="flex flex-col items-center justify-center">
@@ -36,31 +28,29 @@
 	<form
 		method="POST"
 		action="?/resend"
-		use:svelteEnhance={() =>
-			({ result }) => {
-				mailStatus = SEND.SENDING;
-				return handleSendResult(result);
-			}}
+		use:resendEnhance
 		class="mb-7 flex flex-row items-center gap-3"
 	>
 		<p class=" text-xl">{data.mail}</p>
 		<Button
-			disabled={mailStatus === SEND.SENDING}
+			disabled={$resendSubmitting}
 			class="text-sm"
 			transparent
-			error={mailStatus === SEND.FAILED}
+			error={sendMailFailed}
 			type="submit"
-			>{#if mailStatus === SEND.SENDING}
+			>{#if $resendSubmitting}
 				<Shell class="animate-spin" size={14} />sending
-			{:else if mailStatus === SEND.FAILED}
-				<CircleX size={14} />failed
+			{:else if sendMailFailed}
+				<CircleX size={14} />sending mail failed
 			{:else}<Send size={14} />send again{/if}
 		</Button>
 	</form>
-	<form class="flex flex-col items-center gap-3" action="?/verify" method="POST" use:superEnhance>
-		<InputFrame error={$errors.key?.[0]}>
-			<KeyInput type="text" name="key" length={data.keyLength} bind:value={$form.key} />
+	<form class="flex flex-col items-center gap-3" action="?/verify" method="POST" use:verifyEnhance>
+		<InputFrame error={$verifyErrors.key?.[0]}>
+			<KeyInput type="text" name="key" length={data.keyLength} bind:value={$verifyForm.key} />
 		</InputFrame>
-		<Button class="text-lg"><ShieldCheck />Verify</Button>
+		<Button disabled={$verifySubmitting} class="text-lg"
+			><ShieldCheck class={$verifySubmitting ? 'animate-spin' : ''} />Verify</Button
+		>
 	</form>
 </main>

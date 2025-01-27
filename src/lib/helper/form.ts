@@ -7,7 +7,8 @@ import {
 	TTL_STEPS,
 	WEEK_IN_MS,
 	YEAR_IN_MS,
-	SHORTEN_LENGTH
+	SHORTEN_LENGTH,
+	THEME
 } from '$lib/helper/defaults';
 import { nanoid } from 'nanoid';
 
@@ -79,9 +80,13 @@ export const getLinkSchema = (loggedin: boolean) =>
 
 export const LoginMailSchema = v.object({
 	email: v.pipe(v.string(), v.trim(), v.email()),
-	theme: v.optional(v.number())
+	theme: v.optional(v.pipe(v.number(), v.enum(THEME)))
 });
 
 export const VerificationSchema = v.object({
-	key: v.pipe(v.string(), v.trim(), v.length(4), v.toLowerCase())
+	key: v.pipe(v.string(), v.trim(), v.minLength(1, 'Please enter key'), v.toLowerCase())
+});
+
+export const ThemeSchema = v.object({
+	theme: v.optional(v.pipe(v.number(), v.enum(THEME)))
 });

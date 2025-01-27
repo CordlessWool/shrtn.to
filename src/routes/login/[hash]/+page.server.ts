@@ -4,8 +4,8 @@ import type { Actions, PageServerLoad } from './$types';
 import { loginUser } from '$lib/helper/auth.server';
 import { error, redirect } from '@sveltejs/kit';
 import { invalidateSession } from '$lib/server/auth';
-import { VerificationSchema } from '$lib/helper/form';
-import { fail, setError, superValidate } from 'sveltekit-superforms';
+import { ThemeSchema, VerificationSchema } from '$lib/helper/form';
+import { fail, message, setError, superValidate } from 'sveltekit-superforms';
 import { valibot } from 'sveltekit-superforms/adapters';
 import { sendVerificationMail } from '$lib/server/mail';
 
@@ -35,10 +35,14 @@ export const load: PageServerLoad = async (event) => {
 		redirect(302, '/login');
 	}
 
-	const form = await superValidate(valibot(VerificationSchema));
+	const [verificationForm, resendForm] = await Promise.all([
+		superValidate(valibot(VerificationSchema)),
+		superValidate(valibot(ThemeSchema))
+	]);
 
 	return {
-		form,
+		resendForm,
+		verificationForm,
 		mail: maskmail(data.mail),
 		keyLength: data.key.length,
 		expiresAt: data.expiresAt
@@ -49,6 +53,10 @@ export const actions = {
 	resend: async (event) => {
 		const { params } = event;
 		const { hash } = params;
+		const form = await superValidate(event.request, valibot(ThemeSchema));
+		if (!form.valid) {
+			return fail(400, { form });
+		}
 
 		const data = db
 			.select({
@@ -63,8 +71,8 @@ export const actions = {
 			redirect(302, '/login');
 		}
 
-		await sendVerificationMail(data.email, data.key);
-		return { success: true };
+		await sendVerificationMail(data.email, data.key, form.data.theme);
+		return message(form, 'Mail sent');
 	},
 	verify: async (event) => {
 		const { locals, params, request } = event;
