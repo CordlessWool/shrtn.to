@@ -7,7 +7,7 @@
 	import InputFrame from '$lib/comp/InputFrame.svelte';
 	import { enhance as svelteEnhance } from '$app/forms';
 	import type { ActionResult } from '@sveltejs/kit';
-	import { onMount } from 'svelte';
+
 	const { data }: { data: PageData } = $props();
 
 	const { form, enhance: superEnhance, errors } = superForm(data.form);
@@ -16,13 +16,7 @@
 		SENDING: 1,
 		FAILED: 2
 	};
-	let mailStatus = $state(SEND.SENDING);
-
-	onMount(() => {
-		setTimeout(() => {
-			mailStatus = SEND.READY;
-		}, 3000);
-	});
+	let mailStatus = $state(SEND.READY);
 
 	const handleSendResult = (result: ActionResult) => {
 		if (result.type === 'success') {
