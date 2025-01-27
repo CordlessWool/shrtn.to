@@ -7,6 +7,13 @@ import { invalidateSession } from '$lib/server/auth';
 import { VerificationSchema } from '$lib/helper/form';
 import { fail, setError, superValidate } from 'sveltekit-superforms';
 import { valibot } from 'sveltekit-superforms/adapters';
+import { sendVerificationMail } from '$lib/server/mail';
+
+const maskmail = (mail: string) => {
+	const [name, domain] = mail.split('@');
+	const half = Math.ceil(name.length / 2);
+	return `${name.slice(0, half)}${'*'.repeat(half)}@${domain}`;
+};
 
 export const load: PageServerLoad = async (event) => {
 	const { locals, params } = event;
@@ -16,20 +23,47 @@ export const load: PageServerLoad = async (event) => {
 
 	const data = db
 		.select({
-			email: schema.magicLink.email,
+			mail: schema.magicLink.email,
 			expiresAt: schema.magicLink.expiresAt
 		})
 		.from(schema.magicLink)
 		.where(and(eq(schema.magicLink.id, params.hash), gte(schema.magicLink.expiresAt, new Date())))
 		.get();
 
-	if (data) {
-		return data;
+	if (!data) {
+		redirect(302, '/login');
 	}
-	redirect(302, '/login');
+
+	const form = await superValidate(valibot(VerificationSchema));
+
+	return {
+		form,
+		mail: maskmail(data.mail),
+		expiresAt: data.expiresAt
+	};
 };
 
 export const actions = {
+	resend: async (event) => {
+		const { params } = event;
+		const { hash } = params;
+
+		const data = db
+			.select({
+				email: schema.magicLink.email,
+				key: schema.magicLink.verification
+			})
+			.from(schema.magicLink)
+			.where(and(eq(schema.magicLink.id, hash), gte(schema.magicLink.expiresAt, new Date())))
+			.get();
+
+		if (!data) {
+			redirect(302, '/login');
+		}
+
+		await sendVerificationMail(data.email, data.key);
+		return { success: true };
+	},
 	verify: async (event) => {
 		const { locals, params, request } = event;
 		const { hash } = params;
