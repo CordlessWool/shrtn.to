@@ -11,7 +11,7 @@ import { valibot } from 'sveltekit-superforms/adapters';
 import { createUUID } from '$lib/helper/identifiers';
 import { HOUR_IN_MS } from '$lib/helper/defaults';
 
-const nanokey = customAlphabet('abcdefghijkmnpqrstuvwxyz23456789', 4);
+const nanokey = customAlphabet('abcdefghijkmnpqrstuvwxyz23456789', 3);
 
 const getUserId = (email: string, userId: string | null | undefined): string => {
 	const user = db

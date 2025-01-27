@@ -24,6 +24,7 @@ export const load: PageServerLoad = async (event) => {
 	const data = db
 		.select({
 			mail: schema.magicLink.email,
+			key: schema.magicLink.verification,
 			expiresAt: schema.magicLink.expiresAt
 		})
 		.from(schema.magicLink)
@@ -39,6 +40,7 @@ export const load: PageServerLoad = async (event) => {
 	return {
 		form,
 		mail: maskmail(data.mail),
+		keyLength: data.key.length,
 		expiresAt: data.expiresAt
 	};
 };

@@ -32,7 +32,7 @@
 <main class="flex flex-col items-center justify-center">
 	<h1 class="mb-4 text-2xl font-bold">Enter verification key</h1>
 
-	<p>Please enter the 4-character key that was sent to your email.</p>
+	<p>Please enter the {data.keyLength}-character key that was sent to your email.</p>
 	<form
 		method="POST"
 		action="?/resend"
@@ -59,7 +59,7 @@
 	</form>
 	<form class="flex flex-col items-center gap-3" action="?/verify" method="POST" use:superEnhance>
 		<InputFrame error={$errors.key?.[0]}>
-			<KeyInput type="text" name="key" length={4} bind:value={$form.key} />
+			<KeyInput type="text" name="key" length={data.keyLength} bind:value={$form.key} />
 		</InputFrame>
 		<Button class="text-lg"><ShieldCheck />Verify</Button>
 	</form>
