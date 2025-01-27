@@ -10,7 +10,6 @@ import { valibot } from 'sveltekit-superforms/adapters';
 
 export const actions = {
 	verify: async (event) => {
-		await securitySleep();
 		const { locals, params, request } = event;
 		const { hash } = params;
 
@@ -36,6 +35,7 @@ export const actions = {
 			.get();
 
 		if (!user) {
+			await securitySleep();
 			setError(form, 'key', 'Invalid key');
 			return fail(400, { form });
 		}
