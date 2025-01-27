@@ -1,5 +1,5 @@
 import { db, schema } from '$lib/server/db';
-import { mail, sendVerificationMail } from '$lib/server/mail';
+import { sendVerificationMail } from '$lib/server/mail';
 import type { Actions } from './$types';
 import { customAlphabet } from 'nanoid';
 import { eq } from 'drizzle-orm';
@@ -9,10 +9,8 @@ import { LoginMailSchema } from '$lib/helper/form';
 import { superValidate } from 'sveltekit-superforms';
 import { valibot } from 'sveltekit-superforms/adapters';
 import { createUUID } from '$lib/helper/identifiers';
+import { HOUR_IN_MS } from '$lib/helper/defaults';
 
-const HOUR_IN_MS = 3600000;
-const EXPIRE_IN_HOURS = 3;
-const EXPIRE_IN_MS = HOUR_IN_MS * EXPIRE_IN_HOURS;
 const nanokey = customAlphabet('abcdefghijkmnpqrstuvwxyz23456789', 4);
 
 const getUserId = (email: string, userId: string | null | undefined): string => {
@@ -63,7 +61,7 @@ export const actions = {
 				{
 					id: magicid,
 					userId,
-					expiresAt: new Date(Date.now() + EXPIRE_IN_MS),
+					expiresAt: new Date(Date.now() + HOUR_IN_MS),
 					verification
 				}
 			])
