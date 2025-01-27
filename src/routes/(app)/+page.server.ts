@@ -5,7 +5,7 @@ import { db, schema } from '$lib/server/db';
 import { error, redirect } from '@sveltejs/kit';
 import { getLinkSchema, getString } from '$lib/helper/form';
 import { createAndLoginTempUser } from '$lib/helper/auth.server';
-import { and, eq } from 'drizzle-orm';
+import { and, eq, gte } from 'drizzle-orm';
 
 export const load: PageServerLoad = async ({ locals }) => {
 	const form = superValidate(valibot(getLinkSchema(!!locals.user && !locals.user.temp)));
@@ -23,7 +23,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 			expiresAt: schema.link.expiresAt
 		})
 		.from(schema.link)
-		.where(eq(schema.link.userId, locals.user.id))
+		.where(and(eq(schema.link.userId, locals.user.id), gte(schema.link.expiresAt, new Date())))
 		.all();
 
 	return {

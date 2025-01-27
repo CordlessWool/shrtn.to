@@ -35,7 +35,7 @@ export const actions = {
 			.get();
 
 		if (!user) {
-			setError(form, 'key', 'Invalid key');
+			setError(form, 'key', 'Key is invalid or expired');
 			return fail(400, { form });
 		}
 
