@@ -17,7 +17,7 @@ const maskmail = (mail: string) => {
 
 export const load: PageServerLoad = async (event) => {
 	const { locals, params } = event;
-	if (locals.user) {
+	if (locals.user && locals.user.temp === false) {
 		redirect(302, '/');
 	}
 
