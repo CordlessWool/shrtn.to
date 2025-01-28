@@ -7,7 +7,8 @@ import {
 	TTL_STEPS,
 	WEEK_IN_MS,
 	YEAR_IN_MS,
-	SHORTEN_LENGTH
+	SHORTEN_LENGTH,
+	THEME
 } from '$lib/helper/defaults';
 import { nanoid } from 'nanoid';
 
@@ -36,7 +37,7 @@ const TTLs = [
 	[WEEK_IN_MS, 'a week'],
 	[MONTH_IN_MS, 'a month'],
 	[YEAR_IN_MS, 'a year'],
-	[Infinity, 'never']
+	[Infinity, 'for ever']
 ] as const;
 
 export const ttlFromStep = (step: TTL_STEPS): number => {
@@ -78,5 +79,14 @@ export const getLinkSchema = (loggedin: boolean) =>
 	loggedin ? LinkSchemaSignedUp : LinkSchemaTemp;
 
 export const LoginMailSchema = v.object({
-	email: v.pipe(v.string(), v.trim(), v.email())
+	email: v.pipe(v.string(), v.trim(), v.email()),
+	theme: v.optional(v.pipe(v.number(), v.enum(THEME)))
+});
+
+export const VerificationSchema = v.object({
+	key: v.pipe(v.string(), v.trim(), v.minLength(1, 'Please enter key'), v.toLowerCase())
+});
+
+export const ThemeSchema = v.object({
+	theme: v.optional(v.pipe(v.number(), v.enum(THEME)))
 });

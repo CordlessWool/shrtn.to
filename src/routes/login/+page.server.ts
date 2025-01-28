@@ -1,18 +1,17 @@
 import { db, schema } from '$lib/server/db';
-import { mail } from '$lib/server/mail';
+import { sendVerificationMail } from '$lib/server/mail';
 import type { Actions } from './$types';
-import { nanoid } from 'nanoid';
+import { customAlphabet } from 'nanoid';
 import { eq } from 'drizzle-orm';
-import { env } from '$env/dynamic/public';
 import { error, fail, redirect } from '@sveltejs/kit';
 import * as auth from '$lib/server/auth';
 import { LoginMailSchema } from '$lib/helper/form';
-import { message, superValidate } from 'sveltekit-superforms';
+import { superValidate } from 'sveltekit-superforms';
 import { valibot } from 'sveltekit-superforms/adapters';
+import { createUUID } from '$lib/helper/identifiers';
+import { HOUR_IN_MS } from '$lib/helper/defaults';
 
-const HOUR_IN_MS = 3600000;
-const EXPIRE_IN_HOURS = 3;
-const EXPIRE_IN_MS = HOUR_IN_MS * EXPIRE_IN_HOURS;
+const nanokey = customAlphabet('abcdefghijkmnpqrstuvwxyz23456789', 3);
 
 const getUserId = (email: string, userId: string | null | undefined): string => {
 	const user = db
@@ -30,7 +29,7 @@ const getUserId = (email: string, userId: string | null | undefined): string => 
 			.run();
 		return userId;
 	} else {
-		const id = nanoid(20);
+		const id = createUUID();
 		db.insert(schema.user)
 			.values([
 				{
@@ -48,44 +47,34 @@ const getUserId = (email: string, userId: string | null | undefined): string => 
 
 export const actions = {
 	mail: async ({ request, locals }) => {
+		const form = await superValidate(request, valibot(LoginMailSchema));
+		if (!form.valid) {
+			return fail(400, { form });
+		}
+		const { email, theme } = form.data;
+		const userId = getUserId(email, locals.user?.id);
+
+		const magicid = createUUID();
+		const verification = nanokey();
+		db.insert(schema.magicLink)
+			.values([
+				{
+					id: magicid,
+					userId,
+					expiresAt: new Date(Date.now() + HOUR_IN_MS),
+					verification,
+					email
+				}
+			])
+			.run();
 		try {
-			const form = await superValidate(request, valibot(LoginMailSchema));
-			if (!form.valid) {
-				return fail(400, { form });
-			}
-			const { email } = form.data;
-			const userId = getUserId(email, locals.user?.id);
-
-			const magicid = nanoid(20);
-			db.insert(schema.magicLink)
-				.values([
-					{
-						id: magicid,
-						userId,
-						expiresAt: new Date(Date.now() + EXPIRE_IN_MS)
-					}
-				])
-				.run();
-			const magicLinkUrl = new URL(`login/${magicid}`, env.PUBLIC_BASE_URL);
-
-			await mail(
-				email,
-				'Your login link',
-				`
-		Hello there!
-
-		Click the link below to login:
-		${magicLinkUrl.href}
-
-		The link will expire in ${EXPIRE_IN_HOURS} hours.
-		`
-			);
-			// send email
-			return message(form, 'Mail sent');
+			//send mail
+			await sendVerificationMail(email, verification, theme);
 		} catch (e) {
 			console.error(e);
 			error(500);
 		}
+		redirect(302, `/login/${magicid}`);
 	},
 	logout: (event) => {
 		if (!event.locals.session) {

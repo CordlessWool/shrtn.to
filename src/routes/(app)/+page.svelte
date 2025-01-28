@@ -62,7 +62,7 @@
 					bind:value={$form.link}
 				/>
 				<Select name="ttl">
-					{#each getTTLs(isLoggedIn(data.user)) as [time, text]}
+					{#each getTTLs(isLoggedIn(data.user)).reverse() as [time, text]}
 						<option value={time}>{text}</option>
 					{/each}
 				</Select>
