@@ -8,6 +8,7 @@ import { ThemeSchema, VerificationSchema } from '$lib/helper/form';
 import { fail, message, setError, superValidate } from 'sveltekit-superforms';
 import { valibot } from 'sveltekit-superforms/adapters';
 import { sendVerificationMail } from '$lib/server/mail';
+import { pathWithLang } from '$lib/helper/path';
 
 const maskmail = (mail: string) => {
 	const [name, domain] = mail.split('@');
@@ -18,7 +19,7 @@ const maskmail = (mail: string) => {
 export const load: PageServerLoad = async (event) => {
 	const { locals, params } = event;
 	if (locals.user && locals.user.temp === false) {
-		redirect(302, '/');
+		redirect(302, pathWithLang('/'));
 	}
 
 	const data = db
@@ -32,7 +33,7 @@ export const load: PageServerLoad = async (event) => {
 		.get();
 
 	if (!data) {
-		redirect(302, '/login');
+		redirect(302, pathWithLang('/login'));
 	}
 
 	const [verificationForm, resendForm] = await Promise.all([
@@ -68,7 +69,7 @@ export const actions = {
 			.get();
 
 		if (!data) {
-			redirect(302, '/login');
+			redirect(302, pathWithLang('/login'));
 		}
 
 		await sendVerificationMail(data.email, data.key, form.data.theme);
@@ -124,6 +125,6 @@ export const actions = {
 		db.delete(schema.magicLink).where(eq(schema.magicLink.id, hash)).run();
 
 		loginUser(event, user.id);
-		redirect(302, '/');
+		redirect(302, pathWithLang('/'));
 	}
 } satisfies Actions;

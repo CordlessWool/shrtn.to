@@ -10,6 +10,8 @@ import { superValidate } from 'sveltekit-superforms';
 import { valibot } from 'sveltekit-superforms/adapters';
 import { createUUID } from '$lib/helper/identifiers';
 import { HOUR_IN_MS } from '$lib/helper/defaults';
+import { languageTag, sourceLanguageTag } from '$lib/paraglide/runtime';
+import { pathWithLang } from '$lib/helper/path';
 
 const nanokey = customAlphabet('abcdefghijkmnpqrstuvwxyz23456789', 3);
 
@@ -74,7 +76,8 @@ export const actions = {
 			console.error(e);
 			error(500);
 		}
-		redirect(302, `/login/${magicid}`);
+
+		redirect(302, pathWithLang(`/login/${magicid}`));
 	},
 	logout: (event) => {
 		if (!event.locals.session) {
@@ -83,6 +86,6 @@ export const actions = {
 		auth.invalidateSession(event.locals.session.id);
 		auth.deleteSessionTokenCookie(event);
 
-		return redirect(302, '/');
+		return redirect(302, pathWithLang('/'));
 	}
 } satisfies Actions;
