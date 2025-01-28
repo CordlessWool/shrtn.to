@@ -9,7 +9,7 @@
 	import { LoginMailSchema } from '$lib/helper/form';
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
-	import { theme } from '$lib/stores';
+	import ThemeHiddenInput from '$lib/comp/ThemeHiddenInput.svelte';
 
 	const { data }: { data: PageData } = $props();
 
@@ -41,7 +41,7 @@
 					<LogIn size={16} />
 				</Button>
 			</InputFrame>
-			<input type="number" hidden name="theme" value={$theme} />
+			<ThemeHiddenInput />
 		</form>
 	</section>
 </main>

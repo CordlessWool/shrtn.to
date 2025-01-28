@@ -5,6 +5,7 @@
 	import Button from '$lib/comp/Button.svelte';
 	import { ShieldCheck, Send, Shell, CircleX } from 'lucide-svelte';
 	import InputFrame from '$lib/comp/InputFrame.svelte';
+	import ThemeHiddenInput from '$lib/comp/ThemeHiddenInput.svelte';
 
 	const { data }: { data: PageData } = $props();
 	let sendMailFailed = $state(false);
@@ -32,6 +33,7 @@
 		class="mb-7 flex flex-row items-center gap-3"
 	>
 		<p class=" text-xl">{data.mail}</p>
+		<ThemeHiddenInput />
 		<Button
 			disabled={$resendSubmitting}
 			class="text-sm"
