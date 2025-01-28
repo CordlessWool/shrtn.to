@@ -62,12 +62,12 @@
 					autocomplete="off"
 					bind:value={$form.link}
 				/>
-				<Select name="ttl">
+				<Select name="ttl" aria-label={m.ttl()}>
 					{#each getTTLs(isLoggedIn(data.user)).reverse() as [time, text]}
 						<option value={time}>{m[text]()}</option>
 					{/each}
 				</Select>
-				<Button type="submit">
+				<Button type="submit" title={m.create_link()}>
 					<LinkIcon size={16} />
 				</Button>
 			</InputFrame>

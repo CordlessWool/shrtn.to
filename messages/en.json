@@ -1,5 +1,8 @@
 {
 	"$schema": "https://inlang.com/schema/inlang-message-format",
+	"title": "Shrtn - your own link shortener",
+	"meta_description": "Shrtn is your own customizable link shortener. Easily shorten, manage, and track your links with our open-source solution.",
+	"meta_keywords": "link shortener, URL shortener, open-source, customizable, link management",
 	"made_with_love": "Made with ♥ by",
 	"sign_in": "Sign in",
 	"sign_in_link": "Add the links to your account",
@@ -32,5 +35,11 @@
 	"error_empty_key": "Please enter key",
 	"error_invalid_email": "Please enter a valid e-mail",
 	"error_link_min_lenght": "We require links with a min length of {requirement}",
-	"error_invalid_url": "Please enter a valid URL. We reciefed: {received}"
+	"error_invalid_url": "Please enter a valid URL. We reciefed: {received}",
+	"copy_link": "Copy link",
+	"copied_link": "Link copied",
+	"delete_link": "Delete link",
+	"create_link": "Create link",
+	"ttl": "Time to live",
+	"send_verification": "Send verification mail"
 }

@@ -15,5 +15,5 @@ export const GET: RequestHandler = ({ params }) => {
 	if (data == null) {
 		error(404);
 	}
-	redirect(301, data.link);
+	redirect(302, data.link);
 };

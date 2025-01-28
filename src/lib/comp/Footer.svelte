@@ -3,7 +3,8 @@
 </script>
 
 <footer>
-	<a href="/">EN</a> <a href="/de">DE</a>
+	<a rel="alternative" hreflang="en" href="/">EN</a>
+	<a rel="alternative" hreflang="de" href="/">DE</a>
 	<span>{m.made_with_love()} <a href="https://dropanote.de">CordlessWool</a></span>
 </footer>
 

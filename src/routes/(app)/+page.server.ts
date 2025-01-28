@@ -6,6 +6,7 @@ import { error, redirect } from '@sveltejs/kit';
 import { getLinkSchema, getString } from '$lib/helper/form';
 import { createAndLoginTempUser } from '$lib/helper/auth.server';
 import { and, eq, gte } from 'drizzle-orm';
+import { pathWithLang } from '$lib/helper/path';
 
 export const load: PageServerLoad = async ({ locals }) => {
 	const form = superValidate(valibot(getLinkSchema(!!locals.user && !locals.user.temp)));
@@ -64,7 +65,7 @@ export const actions = {
 			])
 			.run();
 
-		redirect(302, `/link/${short}`);
+		redirect(302, pathWithLang(`/link/${short}`));
 	},
 	remove: async ({ locals, request }) => {
 		const { user } = locals;

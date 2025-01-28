@@ -6,7 +6,7 @@
 
 <style lang="postcss">
 	input {
-		unset: all;
+		all: unset;
 		@apply mb-3 text-7xl outline-none focus:ring-0;
 		--char-w: 1ch;
 		--gap: calc(0.4 * var(--char-w));
