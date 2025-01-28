@@ -1,5 +1,17 @@
 # shrtn.to
 
+## 1.3.0
+
+### Minor Changes
+
+- improve accessibilty and seo
+- 807a7cb: Sending key to mail instead of link
+- b142a99: add i18n
+
+### Patch Changes
+
+- be3439c: fix missing run and await
+
 ## 1.2.0
 
 ### Minor Changes
