@@ -1,5 +1,11 @@
 # shrtn.to
 
+## 1.3.3
+
+### Patch Changes
+
+- a951564: fix language switch
+
 ## 1.3.2
 
 ### Patch Changes
