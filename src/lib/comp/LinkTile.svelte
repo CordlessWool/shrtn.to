@@ -111,10 +111,10 @@
 		@apply font-bold;
 	}
 	.link {
-		@apply row-span-2;
+		@apply relative row-span-2 overflow-hidden;
 	}
 	.tourl {
-		@apply ml-3 text-xs;
+		@apply ml-1 overflow-hidden text-ellipsis text-nowrap text-xs;
 	}
 
 	.expires {
