@@ -1,3 +1,4 @@
+import { i18n } from '$lib/i18n';
 import { sequence } from '@sveltejs/kit/hooks';
 import type { Handle } from '@sveltejs/kit';
 import * as auth from '$lib/server/auth.js';
@@ -34,4 +35,4 @@ const handleAuth: Handle = ({ event, resolve }) => {
 	return resolve(event);
 };
 
-export const handle: Handle = sequence(handleAuth);
+export const handle: Handle = sequence(handleAuth, i18n.handle());

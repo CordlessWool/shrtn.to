@@ -1,0 +1,16 @@
+{
+	"$schema": "https://inlang.com/schema/inlang-message-format",
+	"made_with_love": "Made with ♥ by",
+	"sign_in_link": "Add the links to your account",
+	"sign_out": "Sign out",
+	"teaser": "A small easy to setup open-source link shortener",
+	"teaser_sub": "host your own",
+	"link_input_placeholder": "Paste your link here",
+	"anhour": "an hour",
+	"aday": "a day",
+	"aweek": "a week",
+	"amonth": "a month",
+	"ayear": "a year",
+	"forever": "forever",
+	"never": "never"
+}
