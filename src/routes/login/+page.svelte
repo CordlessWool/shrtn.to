@@ -33,7 +33,7 @@
 			<InputFrame for="mail" label={m.email()} info={m.email_info()} error={$errors.email?.[0]}>
 				<Mail />
 				<Input id="mail" name="email" bind:value={$form.email} />
-				<Button type="submit">
+				<Button type="submit" title={m.send_verification()}>
 					<LogIn size={16} />
 				</Button>
 			</InputFrame>

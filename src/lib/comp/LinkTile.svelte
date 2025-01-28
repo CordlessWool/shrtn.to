@@ -69,7 +69,7 @@
 		{expiresText}
 	</small>
 	<div class="actions">
-		<Button onclick={() => navigator.clipboard.writeText(shrtnUrl.href)}>
+		<Button onclick={() => navigator.clipboard.writeText(shrtnUrl.href)} title={m.copy_link()}>
 			<Copy size={19} />
 		</Button>
 		{#if deletePath}
@@ -84,7 +84,7 @@
 					};
 				}}
 			>
-				<Button submit>
+				<Button submit title={m.delete_link()}>
 					<Trash2 size={19} />
 				</Button>
 				<input name="key" value={key} hidden />

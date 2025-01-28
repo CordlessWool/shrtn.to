@@ -35,5 +35,11 @@
 	"error_empty_key": "Please enter key",
 	"error_invalid_email": "Please enter a valid e-mail",
 	"error_link_min_lenght": "We require links with a min length of {requirement}",
-	"error_invalid_url": "Please enter a valid URL. We reciefed: {received}"
+	"error_invalid_url": "Please enter a valid URL. We reciefed: {received}",
+	"copy_link": "Copy link",
+	"copied_link": "Link copied",
+	"delete_link": "Delete link",
+	"create_link": "Create link",
+	"ttl": "Time to live",
+	"send_verification": "Send verification mail"
 }
