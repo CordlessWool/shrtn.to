@@ -1,5 +1,11 @@
 # shrtn.to
 
+## 1.3.1
+
+### Patch Changes
+
+- fix zip file and add all migrations
+
 ## 1.3.0
 
 ### Minor Changes
