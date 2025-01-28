@@ -6,6 +6,7 @@
 	import { ShieldCheck, Send, Shell, CircleX } from 'lucide-svelte';
 	import InputFrame from '$lib/comp/InputFrame.svelte';
 	import ThemeHiddenInput from '$lib/comp/ThemeHiddenInput.svelte';
+	import * as m from '$lib/paraglide/messages';
 
 	const { data }: { data: PageData } = $props();
 	let sendMailFailed = $state(false);
@@ -23,9 +24,9 @@
 </script>
 
 <main class="flex flex-col items-center justify-center">
-	<h1 class="mb-4 text-2xl font-bold">Enter verification key</h1>
+	<h1 class="mb-4 text-2xl font-bold">{m.verification_headline()}</h1>
 
-	<p>Please enter the {data.keyLength}-character key that was sent to your email.</p>
+	<p>{m.verification_subline({ keyLength: data.keyLength })}</p>
 	<form
 		method="POST"
 		action="?/resend"
@@ -41,10 +42,10 @@
 			error={sendMailFailed}
 			type="submit"
 			>{#if $resendSubmitting}
-				<Shell class="animate-spin" size={14} />sending
+				<Shell class="animate-spin" size={14} />{m.sending()}
 			{:else if sendMailFailed}
-				<CircleX size={14} />sending mail failed
-			{:else}<Send size={14} />send again{/if}
+				<CircleX size={14} />{m.send_failed()}
+			{:else}<Send size={14} />{m.send_again()}{/if}
 		</Button>
 	</form>
 	<form class="flex flex-col items-center gap-3" action="?/verify" method="POST" use:verifyEnhance>
@@ -52,7 +53,7 @@
 			<KeyInput type="text" name="key" length={data.keyLength} bind:value={$verifyForm.key} />
 		</InputFrame>
 		<Button disabled={$verifySubmitting} class="text-lg"
-			><ShieldCheck class={$verifySubmitting ? 'animate-spin' : ''} />Verify</Button
+			><ShieldCheck class={$verifySubmitting ? 'animate-spin' : ''} />{m.verify()}</Button
 		>
 	</form>
 </main>
