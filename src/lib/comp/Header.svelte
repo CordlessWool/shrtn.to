@@ -37,6 +37,7 @@
 		@apply flex items-center gap-3;
 	}
 	nav > :global(*) {
-		@apply underline-offset-2 hover:underline;
+		@apply underline-offset-4 hover:font-bold hover:underline;
+		@apply transform transition-all duration-300 ease-in-out hover:scale-105;
 	}
 </style>
