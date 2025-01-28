@@ -32,6 +32,7 @@
 	"sending": "Sendet",
 	"send_failed": "Senden fehlgeschlagen",
 	"verify": "Verifizieren",
+	"verification": "shrtn | Verifizierung",
 	"error_empty_key": "Ein Code wird benötigt",
 	"error_invalid_email": "Bitte gebe eine gültige E-Mail-Adresse ein",
 	"error_link_min_lenght": "Wir benötigen Links mit einer Mindestlänge von {requirement}",
@@ -41,5 +42,7 @@
 	"delete_link": "Link löschen",
 	"create_link": "Link erstellen",
 	"ttl": "Lebensdauer",
-	"send_verification": "Verifizierungs-Mail senden"
+	"send_verification": "Verifizierungs-Mail senden",
+	"verification_mail_headline": "Willkommen bei shrtn",
+	"verification_mail_body": "Bitte gebe den folgenden Schlüssel auf der Seite ein, die sich nach der Eingabe Deiner E-Mail geöffnet hat. Dieser Schlüssel funktioniert nur auf dieser Seite."
 }

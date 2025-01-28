@@ -32,6 +32,7 @@
 	"sending": "sending",
 	"send_failed": "send failed",
 	"verify": "verify",
+	"verification": "shrtn | Verification",
 	"error_empty_key": "Please enter key",
 	"error_invalid_email": "Please enter a valid e-mail",
 	"error_link_min_lenght": "We require links with a min length of {requirement}",
@@ -41,5 +42,7 @@
 	"delete_link": "Delete link",
 	"create_link": "Create link",
 	"ttl": "Time to live",
-	"send_verification": "Send verification mail"
+	"send_verification": "Send verification mail",
+	"verification_mail_headline": "Welcome to shrtn",
+	"verification_mail_body": "Please enter the following key on the page that opens after you have entered your e-mail. This key only works on this website."
 }
