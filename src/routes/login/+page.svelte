@@ -10,6 +10,7 @@
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
 	import ThemeHiddenInput from '$lib/comp/ThemeHiddenInput.svelte';
+	import * as m from '$lib/paraglide/messages';
 
 	const { data }: { data: PageData } = $props();
 
@@ -27,14 +28,9 @@
 
 <main>
 	<section>
-		<h1>Login</h1>
+		<h1>{m.sign_in()}</h1>
 		<form method="POST" use:enhance action="?/mail" class="inputs">
-			<InputFrame
-				for="mail"
-				label="E-Mail"
-				info="We will send you a link to login"
-				error={$errors.email?.[0]}
-			>
+			<InputFrame for="mail" label={m.email()} info={m.email_info()} error={$errors.email?.[0]}>
 				<Mail />
 				<Input id="mail" name="email" bind:value={$form.email} />
 				<Button type="submit">
