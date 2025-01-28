@@ -40,5 +40,6 @@
 	"copied_link": "Link kopiert",
 	"delete_link": "Link löschen",
 	"create_link": "Link erstellen",
+	"ttl": "Lebensdauer",
 	"send_verification": "Verifizierungs-Mail senden"
 }
