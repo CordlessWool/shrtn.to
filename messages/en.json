@@ -1,6 +1,7 @@
 {
 	"$schema": "https://inlang.com/schema/inlang-message-format",
 	"made_with_love": "Made with ♥ by",
+	"sign_in": "Sign in",
 	"sign_in_link": "Add the links to your account",
 	"sign_out": "Sign out",
 	"teaser": "A small easy to setup open-source link shortener",
@@ -12,5 +13,20 @@
 	"amonth": "a month",
 	"ayear": "a year",
 	"forever": "forever",
-	"never": "never"
+	"expires_never": "Expires never",
+	"expires_seconds": "Expires in ~ {number} seconds",
+	"expires_minutes": "Expires in ~ {number} minutes",
+	"expires_hours": "Expires in ~ {number} hours",
+	"expires_days": "Expires in ~ {number} days",
+	"expires_weeks": "Expires in ~ {number} weeks",
+	"expires_months": "Expires in ~ {number} months",
+	"expires_years": "Expires in ~ {number} years",
+	"email": "e-mail",
+	"email_info": "We will send you an e-mail with a key",
+	"verification_headline": "Enter verification key",
+	"verification_subline": "Please enter the {amount} digit key we sent to your e-mail.",
+	"send_again": "send again",
+	"sending": "sending",
+	"send_failed": "send failed",
+	"verify": "verify"
 }
