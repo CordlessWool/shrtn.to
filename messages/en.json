@@ -24,9 +24,13 @@
 	"email": "e-mail",
 	"email_info": "We will send you an e-mail with a key",
 	"verification_headline": "Enter verification key",
-	"verification_subline": "Please enter the {amount} digit key we sent to your e-mail.",
+	"verification_subline": "Please enter the {keyLength} digit key we sent to your e-mail.",
 	"send_again": "send again",
 	"sending": "sending",
 	"send_failed": "send failed",
-	"verify": "verify"
+	"verify": "verify",
+	"error_empty_key": "Please enter key",
+	"error_invalid_email": "Please enter a valid e-mail",
+	"error_link_min_lenght": "We require links with a min length of {requirement}",
+	"error_invalid_url": "Please enter a valid URL. We reciefed: {received}"
 }
