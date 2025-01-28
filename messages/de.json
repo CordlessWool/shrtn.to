@@ -1,6 +1,8 @@
 {
 	"$schema": "https://inlang.com/schema/inlang-message-format",
-
+	"title": "Shrtn - dein eigener Link-Kürzer",
+	"meta_description": "Shrtn ist dein eigener anpassbarer Link-Kürzer. Kürze, verwalte und verfolge deine Links einfach mit unserer Open-Source-Lösung.",
+	"meta_keywords": "Link-Kürzer, URL-Kürzer, Open-Source, anpassbar, Link-Verwaltung",
 	"made_with_love": "Entwicklet mit ♥ von",
 	"sign_in": "Anmelden",
 	"sign_in_link": "Fügen die Links Deinem Konto hinzu",
