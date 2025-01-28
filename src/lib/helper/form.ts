@@ -32,12 +32,12 @@ export const getString = (
 };
 
 const TTLs = [
-	[HOUR_IN_MS, 'a hour'],
-	[DAY_IN_MS, 'a day'],
-	[WEEK_IN_MS, 'a week'],
-	[MONTH_IN_MS, 'a month'],
-	[YEAR_IN_MS, 'a year'],
-	[Infinity, 'for ever']
+	[HOUR_IN_MS, 'anhour'],
+	[DAY_IN_MS, 'aday'],
+	[WEEK_IN_MS, 'aweek'],
+	[MONTH_IN_MS, 'amonth'],
+	[YEAR_IN_MS, 'ayear'],
+	[Infinity, 'forever']
 ] as const;
 
 export const ttlFromStep = (step: TTL_STEPS): number => {

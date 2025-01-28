@@ -6,6 +6,7 @@
 	import Button from './Button.svelte';
 	import { enhance } from '$app/forms';
 	import { slide } from 'svelte/transition';
+	import * as m from '$lib/paraglide/messages.js';
 
 	type Props = Link & {
 		deletePath: string;
@@ -28,11 +29,11 @@
 	};
 
 	const getExpiresInText = (expiresAt: Date | null) => {
-		if (!expiresAt) return 'never';
+		if (!expiresAt) return m.expires_never();
 		const { days, hours, minutes } = calcTimeLeft(expiresAt);
-		if (days > 1) return `${days} days`;
-		if (hours > 2) return `${days * 24 + hours} hours`;
-		return `${hours * 60 + minutes} minutes`;
+		if (days > 2) return m.expires_days({ number: days });
+		if (hours > 2) return m.expires_hours({ number: days * 24 + hours });
+		return m.expires_minutes({ number: hours * 60 + minutes });
 	};
 
 	let expiresText = $state(getExpiresInText(expiresAt));
@@ -47,7 +48,7 @@
 				}
 
 				expiresText = getExpiresInText(expiresAt);
-			}, 5000);
+			}, 11000);
 			return () => clearInterval(interval);
 		}
 	});
@@ -65,11 +66,11 @@
 	</a>
 
 	<small class="expires">
-		Expires in ~ {expiresText}
+		{expiresText}
 	</small>
 	<div class="actions">
 		<Button onclick={() => navigator.clipboard.writeText(shrtnUrl.href)}>
-			<Copy size={20} />
+			<Copy size={19} />
 		</Button>
 		{#if deletePath}
 			<form
@@ -84,7 +85,7 @@
 				}}
 			>
 				<Button submit>
-					<Trash2 size={20} />
+					<Trash2 size={19} />
 				</Button>
 				<input name="key" value={key} hidden />
 			</form>

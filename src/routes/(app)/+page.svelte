@@ -12,6 +12,7 @@
 	import { superForm } from 'sveltekit-superforms';
 	import { SHORTEN_LENGTH } from '$lib/helper/defaults.js';
 	import { nanoid } from 'nanoid';
+	import * as m from '$lib/paraglide/messages.js';
 
 	const { data }: { data: PageData } = $props();
 	let links = $state(data.links);
@@ -49,21 +50,21 @@
 </script>
 
 <main>
-	<h1>shrtn.io</h1>
-	<p>A small easy to setup open-source link shortener - <b>host your own</b>.</p>
+	<h1>shrtn</h1>
+	<p>{m.teaser()} - <b>{m.teaser_sub()}</b>.</p>
 
 	<section class="links">
 		<form method="POST" use:enhance action="?/add">
 			<InputFrame error={$errors.link?.[0] || $errors.ttl?.[0] || $errors.short?.[0]}>
 				<Input
 					name="link"
-					placeholder="Enter link to shorten"
+					placeholder={m.link_input_placeholder()}
 					autocomplete="off"
 					bind:value={$form.link}
 				/>
 				<Select name="ttl">
 					{#each getTTLs(isLoggedIn(data.user)).reverse() as [time, text]}
-						<option value={time}>{text}</option>
+						<option value={time}>{m[text]()}</option>
 					{/each}
 				</Select>
 				<Button type="submit">
@@ -84,7 +85,7 @@
 		@apply flex min-h-full flex-col items-center justify-center gap-3 p-3 md:p-7;
 	}
 	h1 {
-		@apply text-4xl;
+		@apply text-5xl font-bold;
 	}
 	form {
 		@apply md:col-span-2;
