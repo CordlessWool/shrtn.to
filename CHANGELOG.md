@@ -1,5 +1,11 @@
 # shrtn.to
 
+## 1.5.0
+
+### Minor Changes
+
+- bce8508: add arm versions to build
+
 ## 1.4.1
 
 ### Patch Changes
