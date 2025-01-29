@@ -10,6 +10,7 @@ import { pathWithLang } from '$lib/helper/path';
 import { nanoid } from 'nanoid';
 import { SHORTEN_LENGTH } from '$lib/helper/defaults';
 import type { Link } from '$lib/server/db/schema';
+import { env } from '$env/dynamic/private';
 
 const saveLink = (data: Link, counter = 5) => {
 	try {
@@ -31,7 +32,7 @@ const saveLink = (data: Link, counter = 5) => {
 	}
 };
 
-export const load: PageServerLoad = async ({ locals }) => {
+export const load: PageServerLoad = async ({ locals, request }) => {
 	const form = superValidate(valibot(getLinkSchema(!!locals.user && !locals.user.temp)));
 	if (!locals.user) {
 		return {
@@ -56,6 +57,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 		.all();
 
 	return {
+		origin: env.ORIGIN || request.headers.get('origin'),
 		links: data,
 		form: await form
 	};

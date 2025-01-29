@@ -77,7 +77,7 @@
 		</form>
 		{#if data}
 			{#each links as link (link.key)}
-				<LinkTile {...link} deletePath="?/remove" ondeleted={removeLink} />
+				<LinkTile {...link} origin={data.origin} deletePath="?/remove" ondeleted={removeLink} />
 			{/each}
 		{/if}
 	</section>

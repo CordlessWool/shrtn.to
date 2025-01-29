@@ -1,6 +1,5 @@
 <script lang="ts">
 	import type { Link } from '$lib/definitions.js';
-	import { env } from '$env/dynamic/public';
 	import { onMount } from 'svelte';
 	import { Copy, Trash2 } from 'lucide-svelte';
 	import Button from './Button.svelte';
@@ -9,12 +8,13 @@
 	import * as m from '$lib/paraglide/messages.js';
 
 	type Props = Link & {
+		origin: string;
 		deletePath: string;
 		ondeleted: (key: string) => void;
 	};
 
-	const { url, key, expiresAt, deletePath, ondeleted }: Props = $props();
-	const shrtnUrl = new URL(key, env.PUBLIC_BASE_URL);
+	const { url, key, origin, expiresAt, deletePath, ondeleted }: Props = $props();
+	const shrtnUrl = new URL(key, origin);
 	const { hostname } = new URL(url);
 	const favicon = `https://icons.duckduckgo.com/ip3/${hostname}.ico`;
 
