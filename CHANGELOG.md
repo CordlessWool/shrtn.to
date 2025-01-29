@@ -1,5 +1,11 @@
 # shrtn.to
 
+## 1.6.0
+
+### Minor Changes
+
+- 37d5681: use ORIGIN instead of PUBLIC_BASE_URL
+
 ## 1.5.0
 
 ### Minor Changes
