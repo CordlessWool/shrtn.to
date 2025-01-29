@@ -1,5 +1,11 @@
 # shrtn.to
 
+## 1.6.1
+
+### Patch Changes
+
+- add favicon icons
+
 ## 1.6.0
 
 ### Minor Changes
