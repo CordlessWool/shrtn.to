@@ -1,6 +1,7 @@
 import { db, schema } from '$lib/server/db';
 import { eq } from 'drizzle-orm';
 import { error, json } from '@sveltejs/kit';
+import { env } from '$env/dynamic/private';
 import type { RequestHandler } from './$types';
 import type { Link } from '$lib/definitions';
 

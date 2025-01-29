@@ -26,8 +26,8 @@ To configure the application, set the following environment variables. Default v
 # Database connection string
 DATABASE_URL=sqlite_file_name.db
 
-# Base URL for the public-facing site
-PUBLIC_BASE_URL=http://localhost:5173
+# Base URL for the public-facing site, could also be provided by request headers
+ORIGIN=http://localhost:5173
 
 # Mail server configuration
 MAIL_HOST=smtp.example.com
