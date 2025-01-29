@@ -65,8 +65,7 @@ export const LinkSchemaSignedUp = v.object({
 	link: LinkValueSchema,
 	ttl: v.pipe(v.optional(v.number(), HOUR_IN_MS), v.maxValue(ttlFromStep(MAX_TTL_USER))),
 	short: v.pipe(
-		v.optional(v.string(), () => nanoid(SHORTEN_LENGTH)),
-		v.minLength(SHORTEN_LENGTH)
+		v.fallback(v.pipe(v.string(), v.trim(), v.minLength(1)), () => nanoid(SHORTEN_LENGTH))
 	)
 });
 
