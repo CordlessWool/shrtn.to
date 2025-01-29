@@ -10,7 +10,12 @@ export const GET: RequestHandler = ({ params }) => {
 			link: schema.link.url
 		})
 		.from(schema.link)
-		.where(and(eq(schema.link.id, shorten), gte(schema.link.expiresAt, new Date())))
+		.where(
+			and(
+				eq(schema.link.id, shorten),
+				or(gte(schema.link.expiresAt, new Date()), isNull(schema.link.expiresAt))
+			)
+		)
 		.get();
 	if (data == null) {
 		error(404);
