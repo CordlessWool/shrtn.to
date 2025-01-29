@@ -1,5 +1,12 @@
 # shrtn.to
 
+## 1.3.4
+
+### Patch Changes
+
+- bf76241: generate new nanoid if unique constrain failed
+- bf76241: fix load of links with no expire date
+
 ## 1.3.3
 
 ### Patch Changes
