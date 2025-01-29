@@ -1,5 +1,5 @@
 import type { RequestHandler } from './$types';
-import { eq, and, gte } from 'drizzle-orm';
+import { eq, and, gte, or, isNull } from 'drizzle-orm';
 import { db, schema } from '$lib/server/db';
 import { error, redirect } from '@sveltejs/kit';
 
