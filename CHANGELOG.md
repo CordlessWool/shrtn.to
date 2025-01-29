@@ -1,5 +1,11 @@
 # shrtn.to
 
+## 1.4.0
+
+### Minor Changes
+
+- 988ee53: translate emails en, de
+
 ## 1.3.4
 
 ### Patch Changes
