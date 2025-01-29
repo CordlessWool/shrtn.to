@@ -38,8 +38,9 @@ COPY --from=prerelease /usr/src/app/drizzle ./drizzle
 RUN mkdir -p /data && touch /data/shrt-container.db
 RUN chown -R node:node /data
 ENV DATABASE_URL=/data/shrt-container.db
+ENV PORT=3001
 
 # Run the app
 USER node
-EXPOSE 3000/tcp
+EXPOSE 3001/tcp
 ENTRYPOINT npx drizzle-kit migrate --config=drizzle.config.ts && node ./index.js
