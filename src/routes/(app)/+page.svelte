@@ -22,13 +22,16 @@
 	const { form, errors, enhance } = superForm(data.form, {
 		validators: valibotClient(getLinkSchema(isLoggedIn(data.user))),
 		onResult: async ({ result, cancel }) => {
+			$form.short = nanoid(SHORTEN_LENGTH);
 			if (result.type === 'redirect') {
 				const data = await loadLink(result.location);
 				addLink(data);
 				$form.link = '';
-				$form.short = nanoid(SHORTEN_LENGTH);
 				cancel();
 			}
+		},
+		onError: () => {
+			$form.short = nanoid(SHORTEN_LENGTH);
 		}
 	});
 

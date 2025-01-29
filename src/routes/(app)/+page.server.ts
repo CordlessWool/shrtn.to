@@ -5,8 +5,10 @@ import { db, schema } from '$lib/server/db';
 import { error, redirect } from '@sveltejs/kit';
 import { getLinkSchema, getString } from '$lib/helper/form';
 import { createAndLoginTempUser } from '$lib/helper/auth.server';
-import { and, eq, gte } from 'drizzle-orm';
+import { and, eq, gte, isNull, or } from 'drizzle-orm';
 import { pathWithLang } from '$lib/helper/path';
+import { nanoid } from 'nanoid';
+import { SHORTEN_LENGTH } from '$lib/helper/defaults';
 
 export const load: PageServerLoad = async ({ locals }) => {
 	const form = superValidate(valibot(getLinkSchema(!!locals.user && !locals.user.temp)));
@@ -24,7 +26,12 @@ export const load: PageServerLoad = async ({ locals }) => {
 			expiresAt: schema.link.expiresAt
 		})
 		.from(schema.link)
-		.where(and(eq(schema.link.userId, locals.user.id), gte(schema.link.expiresAt, new Date())))
+		.where(
+			and(
+				eq(schema.link.userId, locals.user.id),
+				or(gte(schema.link.expiresAt, new Date()), isNull(schema.link.expiresAt))
+			)
+		)
 		.all();
 
 	return {
@@ -52,18 +59,38 @@ export const actions = {
 
 		const { ttl, link: url, short } = form.data;
 		const expiresAt = ttl === Infinity ? null : new Date(Date.now() + ttl);
-
-		db.insert(schema.link)
-			.values([
-				{
-					id: short,
-					url,
-					userId: user.id,
-					createdAt: new Date(),
-					expiresAt
+		console.log(form.data, expiresAt);
+		let counter = 10;
+		let id = 'abc';
+		do {
+			try {
+				db.insert(schema.link)
+					.values([
+						{
+							id,
+							url,
+							userId: user.id,
+							createdAt: new Date(),
+							expiresAt
+						}
+					])
+					.run();
+				counter = 0;
+			} catch (err) {
+				if (
+					err != null &&
+					typeof err === 'object' &&
+					!Array.isArray(err) &&
+					'code' in err &&
+					err.code === 'SQLITE_CONSTRAINT_PRIMARYKEY'
+				) {
+					id = nanoid(SHORTEN_LENGTH - (counter - 10));
+					continue;
+				} else {
+					throw err;
 				}
-			])
-			.run();
+			}
+		} while (counter-- > 0);
 
 		redirect(302, pathWithLang(`/link/${short}`));
 	},
