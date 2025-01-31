@@ -10,7 +10,7 @@ import { superValidate } from 'sveltekit-superforms';
 import { valibot } from 'sveltekit-superforms/adapters';
 import { createUUID } from '$lib/helper/identifiers';
 import { HOUR_IN_MS } from '$lib/helper/defaults';
-import { languageTag, sourceLanguageTag } from '$lib/paraglide/runtime';
+
 import { pathWithLang } from '$lib/helper/path';
 
 const nanokey = customAlphabet('abcdefghijkmnpqrstuvwxyz23456789', 3);

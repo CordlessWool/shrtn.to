@@ -9,10 +9,11 @@ import { and, eq, gte, isNull, or } from 'drizzle-orm';
 import { pathWithLang } from '$lib/helper/path';
 import { nanoid } from 'nanoid';
 import { SHORTEN_LENGTH } from '$lib/helper/defaults';
-import type { Link } from '$lib/server/db/schema';
+import type { Link as LinkSchema } from '$lib/server/db/schema';
 import { ORIGIN } from '$lib/server/defaults.js';
+import type { Link } from '$lib/definitions';
 
-const saveLink = (data: Link, counter = 5) => {
+const saveLink = (data: LinkSchema, counter = 5) => {
 	try {
 		db.insert(schema.link).values([data]).run();
 		return data.id;
@@ -33,17 +34,17 @@ const saveLink = (data: Link, counter = 5) => {
 };
 
 export const load: PageServerLoad = async ({ locals, request }) => {
-	const form = superValidate(valibot(getLinkSchema(!!locals.user && !locals.user.temp)));
-	if (!locals.user) {
-		return {
-			links: [],
-			form: await form
-		};
-	}
-
 	const origin = ORIGIN || request.headers.get('origin');
 	if (!origin) {
 		error(400, 'Origin header is missing');
+	}
+	const form = superValidate(valibot(getLinkSchema(!!locals.user && !locals.user.temp)));
+	if (!locals.user) {
+		return {
+			links: [] as Link[],
+			form: await form,
+			origin
+		};
 	}
 
 	const data = db
