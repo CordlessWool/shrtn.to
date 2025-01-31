@@ -1,5 +1,13 @@
 # shrtn.to
 
+## 1.6.2
+
+### Patch Changes
+
+- - add link to source code on github
+  - update dependencies including tailwindcss 4.0
+  - load origin env only once by loading it in a server defaults
+
 ## 1.6.1
 
 ### Patch Changes
