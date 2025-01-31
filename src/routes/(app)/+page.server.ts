@@ -10,7 +10,7 @@ import { pathWithLang } from '$lib/helper/path';
 import { nanoid } from 'nanoid';
 import { SHORTEN_LENGTH } from '$lib/helper/defaults';
 import type { Link } from '$lib/server/db/schema';
-import { env } from '$env/dynamic/private';
+import { ORIGIN } from '$lib/server/defaults.js';
 
 const saveLink = (data: Link, counter = 5) => {
 	try {
@@ -40,6 +40,12 @@ export const load: PageServerLoad = async ({ locals, request }) => {
 			form: await form
 		};
 	}
+
+	const origin = ORIGIN || request.headers.get('origin');
+	if (!origin) {
+		error(400, 'Origin header is missing');
+	}
+
 	const data = db
 		.select({
 			url: schema.link.url,
@@ -57,7 +63,7 @@ export const load: PageServerLoad = async ({ locals, request }) => {
 		.all();
 
 	return {
-		origin: env.ORIGIN || request.headers.get('origin'),
+		origin,
 		links: data,
 		form: await form
 	};

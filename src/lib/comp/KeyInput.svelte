@@ -4,7 +4,8 @@
 
 <input bind:value maxlength={length} minlength={length} {...props} style="--n-char:{length}" />
 
-<style lang="postcss">
+<style>
+	@reference "tailwindcss/theme";
 	input {
 		all: unset;
 		@apply mb-3 text-7xl outline-none focus:ring-0;

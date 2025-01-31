@@ -83,7 +83,8 @@
 	</section>
 </main>
 
-<style lang="postcss">
+<style>
+	@reference "tailwindcss/theme";
 	main {
 		@apply flex min-h-full flex-col items-center justify-center gap-3 p-3 md:p-7;
 	}

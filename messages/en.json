@@ -44,5 +44,6 @@
 	"ttl": "Time to live",
 	"send_verification": "Send verification mail",
 	"verification_mail_headline": "Welcome to shrtn",
-	"verification_mail_body": "Please enter the following key on the page that opens after you have entered your e-mail. This key only works on this website."
+	"verification_mail_body": "Please enter the following key on the page that opens after you have entered your e-mail. This key only works on this website.",
+	"github_link_title": "Source code on Github"
 }

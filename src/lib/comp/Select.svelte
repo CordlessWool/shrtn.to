@@ -6,7 +6,8 @@
 	{@render children()}
 </select>
 
-<style lang="postcss">
+<style>
+	@reference "tailwindcss/theme";
 	select {
 		@apply border-0 bg-transparent py-3;
 		@apply cursor-pointer outline-none;

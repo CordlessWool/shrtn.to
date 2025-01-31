@@ -28,7 +28,8 @@
 	{/if}
 </div>
 
-<style lang="postcss">
+<style>
+	@reference "tailwindcss/theme";
 	.frame {
 		@apply grid gap-0;
 	}
@@ -56,7 +57,7 @@
 	.inputs {
 		@apply flex flex-row flex-nowrap items-center gap-3;
 		@apply w-full px-5 py-3;
-		@apply bg-zinc-200 dark:bg-zinc-700;
+		@apply bg-zinc-200;
 		@apply rounded-md border-zinc-500;
 	}
 </style>
