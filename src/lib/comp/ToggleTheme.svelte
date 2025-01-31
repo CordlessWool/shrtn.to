@@ -35,20 +35,11 @@
 	</script>
 </svelte:head>
 
-<button aria-label="button" use:darkLightModeAction>
+<button class="transparent" aria-label="button" use:darkLightModeAction>
 	<Sun class="hidden dark:block" />
 	<Moon class="block dark:hidden" />
 </button>
 
 <style>
-	@reference "tailwindcss/theme";
-	button {
-		@apply cursor-pointer rounded-full p-3;
-		@apply hover:bg-zinc-800 hover:text-zinc-200;
-	}
-
-	:global(.dark) button {
-		@apply dark:bg-zinc-700 dark:text-teal-600;
-		@apply hover:bg-zinc-200 hover:text-zinc-800;
-	}
+	@import './Button.css';
 </style>
