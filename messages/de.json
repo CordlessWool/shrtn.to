@@ -44,5 +44,6 @@
 	"ttl": "Lebensdauer",
 	"send_verification": "Verifizierungs-Mail senden",
 	"verification_mail_headline": "Willkommen bei shrtn",
-	"verification_mail_body": "Bitte gebe den folgenden Schlüssel auf der Seite ein, die sich nach der Eingabe Deiner E-Mail geöffnet hat. Dieser Schlüssel funktioniert nur auf dieser Seite."
+	"verification_mail_body": "Bitte gebe den folgenden Schlüssel auf der Seite ein, die sich nach der Eingabe Deiner E-Mail geöffnet hat. Dieser Schlüssel funktioniert nur auf dieser Seite.",
+	"github_link_title": "Quellcode auf Github"
 }
