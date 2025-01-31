@@ -10,7 +10,7 @@ import { pathWithLang } from '$lib/helper/path';
 import { nanoid } from 'nanoid';
 import { SHORTEN_LENGTH } from '$lib/helper/defaults';
 import type { Link } from '$lib/server/db/schema';
-import { ORIGIN } from '$env/static/private';
+import { ORIGIN } from '$lib/server/defaults.js';
 
 const saveLink = (data: Link, counter = 5) => {
 	try {
