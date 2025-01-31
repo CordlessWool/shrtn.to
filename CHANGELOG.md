@@ -1,5 +1,11 @@
 # shrtn.to
 
+## 1.6.3
+
+### Patch Changes
+
+- e27c0ee: improve typing and styling
+
 ## 1.6.2
 
 ### Patch Changes
