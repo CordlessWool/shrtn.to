@@ -93,7 +93,8 @@
 	</div>
 </section>
 
-<style lang="postcss">
+<style>
+	@reference "tailwindcss/theme";
 	section {
 		@apply grid grid-flow-col grid-cols-3 grid-rows-3 items-center gap-x-3;
 		@apply w-full rounded-md bg-zinc-200 p-3;
@@ -114,7 +115,7 @@
 		@apply relative row-span-2 overflow-hidden;
 	}
 	.tourl {
-		@apply ml-1 overflow-hidden text-ellipsis text-nowrap text-xs;
+		@apply ml-1 overflow-hidden text-xs text-nowrap text-ellipsis;
 	}
 
 	.expires {

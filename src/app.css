@@ -1,13 +1,15 @@
-@import 'tailwindcss/base';
-@import 'tailwindcss/components';
-@import 'tailwindcss/utilities';
+@import 'tailwindcss';
+@custom-variant dark (&:where(.dark, .dark *));
 
 body {
 	@apply font-mono;
 	@apply flex flex-col;
-	@apply dark:bg-zinc-800 dark:text-zinc-200;
 	@apply bg-zinc-100 text-zinc-800;
 	@apply mx-auto min-h-screen max-w-5xl;
+}
+
+.dark body {
+	@apply bg-zinc-800 text-zinc-200;
 }
 
 main {

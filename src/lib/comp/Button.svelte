@@ -6,11 +6,12 @@
 	{@render children()}
 </button>
 
-<style lang="postcss">
+<style>
+	@reference "tailwindcss/theme";
 	button {
 		@apply flex flex-row items-center justify-center gap-2 text-nowrap;
 		@apply p-3;
-		@apply rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-600;
+		@apply rounded-lg focus:ring-2 focus:ring-teal-600 focus:outline-none;
 	}
 
 	button:enabled {

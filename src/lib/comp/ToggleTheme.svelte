@@ -40,7 +40,8 @@
 	<Moon class="block dark:hidden" />
 </button>
 
-<style lang="postcss">
+<style>
+	@reference "tailwindcss/theme";
 	button {
 		@apply cursor-pointer rounded-full p-3;
 		@apply hover:bg-zinc-800 hover:text-zinc-200;
