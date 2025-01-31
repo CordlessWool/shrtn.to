@@ -14,12 +14,12 @@ const cleanupLinks = () => {
 
 setInterval(cleanupLinks, HOUR_IN_MS);
 
-const handleAuth: Handle = async ({ event, resolve }) => {
+const handleAuth: Handle = ({ event, resolve }) => {
 	const sessionToken = event.cookies.get(auth.sessionCookieName);
 	if (!sessionToken) {
 		event.locals.user = null;
 		event.locals.session = null;
-		return await resolve(event);
+		return resolve(event);
 	}
 
 	const { session, user } = auth.validateSessionToken(sessionToken);
@@ -32,7 +32,7 @@ const handleAuth: Handle = async ({ event, resolve }) => {
 	event.locals.user = user;
 	event.locals.session = session;
 
-	return await resolve(event);
+	return resolve(event);
 };
 
 export const handle: Handle = sequence(handleAuth, i18n.handle());
