@@ -58,7 +58,10 @@
 
 	<section class="links">
 		<form method="POST" use:enhance action="?/add">
-			<InputFrame error={$errors.link?.[0] || $errors.ttl?.[0] || $errors.short?.[0]}>
+			<InputFrame
+				info={m.link_input_description()}
+				error={$errors.link?.[0] || $errors.ttl?.[0] || $errors.short?.[0]}
+			>
 				<Input
 					name="link"
 					placeholder={m.link_input_placeholder()}
