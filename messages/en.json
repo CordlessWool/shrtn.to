@@ -9,7 +9,8 @@
 	"sign_out": "Sign out",
 	"teaser": "A small easy to setup open-source link shortener",
 	"teaser_sub": "host your own",
-	"link_input_placeholder": "Paste your link here",
+	"link_input_placeholder": "https://example.com",
+	"link_input_description": "Enter your link in the input field and choose a time to live",
 	"anhour": "an hour",
 	"aday": "a day",
 	"aweek": "a week",
@@ -44,5 +45,6 @@
 	"ttl": "Time to live",
 	"send_verification": "Send verification mail",
 	"verification_mail_headline": "Welcome to shrtn",
-	"verification_mail_body": "Please enter the following key on the page that opens after you have entered your e-mail. This key only works on this website."
+	"verification_mail_body": "Please enter the following key on the page that opens after you have entered your e-mail. This key only works on this website.",
+	"github_link_title": "Source code on Github"
 }

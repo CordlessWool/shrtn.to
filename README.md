@@ -1,38 +1,43 @@
-# sv
+## Docker Setup Instructions
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+1. **Install Docker**: Download from [Docker's official website](https://www.docker.com/products/docker-desktop).
+2. **Run the Docker Container**:
+   ```bash
+   docker run -d -p 3001:3001 --name your-shrtn-container cordlesswool/shrtn
+   ```
+3. **Access the Application**: Navigate to `http://localhost:3001`.
 
-## Creating a project
+## Setup from Downloaded Package
 
-If you're seeing this, you've probably already done this step. Congrats!
+1. **Download and Extract**: Get the package from the [releases page](https://github.com/CordlessWool/shrtn/releases) and extract it.
+2. **Install Dependencies and Start**:
+   ```bash
+   bun install --production
+   bun run db:migrate
+   node ./index.js
+   ```
+3. **Access the Application**: Navigate to `http://localhost:3001`.
 
-```bash
-# create a new project in the current directory
-npx sv create
+## Environment Variables
 
-# create a new project in my-app
-npx sv create my-app
+To configure the application, set the following environment variables. Default values are provided for convenience.
+
 ```
+# Database connection string
+DATABASE_URL=sqlite_file_name.db
 
-## Developing
+# Base URL for the public-facing site, could also be provided by request headers
+ORIGIN=http://localhost:5173
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+# Mail server configuration
+MAIL_HOST=smtp.example.com
+MAIL_FROM=noreply@example.com
+MAIL_PORT=465
+MAIL_USER=noreply@example.com
+MAIL_PASS=secure_password
 
-```bash
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
+# Time-to-live settings for temporary and user-generated content
+## Possible values: HOUR, DAY, WEEK, MONTH, YEAR, EVER
+PUBLIC_TTL_TEMP=YEAR  # Temporary content expires after 30 days
+PUBLIC_TTL_USER=EVER # User-generated content expires after 1 year
 ```
-
-## Building
-
-To create a production version of your app:
-
-```bash
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.

@@ -22,13 +22,16 @@
 	const { form, errors, enhance } = superForm(data.form, {
 		validators: valibotClient(getLinkSchema(isLoggedIn(data.user))),
 		onResult: async ({ result, cancel }) => {
+			$form.short = nanoid(SHORTEN_LENGTH);
 			if (result.type === 'redirect') {
 				const data = await loadLink(result.location);
 				addLink(data);
 				$form.link = '';
-				$form.short = nanoid(SHORTEN_LENGTH);
 				cancel();
 			}
+		},
+		onError: () => {
+			$form.short = nanoid(SHORTEN_LENGTH);
 		}
 	});
 
@@ -55,7 +58,10 @@
 
 	<section class="links">
 		<form method="POST" use:enhance action="?/add">
-			<InputFrame error={$errors.link?.[0] || $errors.ttl?.[0] || $errors.short?.[0]}>
+			<InputFrame
+				info={m.link_input_description()}
+				error={$errors.link?.[0] || $errors.ttl?.[0] || $errors.short?.[0]}
+			>
 				<Input
 					name="link"
 					placeholder={m.link_input_placeholder()}
@@ -74,13 +80,14 @@
 		</form>
 		{#if data}
 			{#each links as link (link.key)}
-				<LinkTile {...link} deletePath="?/remove" ondeleted={removeLink} />
+				<LinkTile {...link} origin={data.origin} deletePath="?/remove" ondeleted={removeLink} />
 			{/each}
 		{/if}
 	</section>
 </main>
 
-<style lang="postcss">
+<style>
+	@reference "tailwindcss/theme";
 	main {
 		@apply flex min-h-full flex-col items-center justify-center gap-3 p-3 md:p-7;
 	}

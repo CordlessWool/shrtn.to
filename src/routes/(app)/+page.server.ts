@@ -5,17 +5,48 @@ import { db, schema } from '$lib/server/db';
 import { error, redirect } from '@sveltejs/kit';
 import { getLinkSchema, getString } from '$lib/helper/form';
 import { createAndLoginTempUser } from '$lib/helper/auth.server';
-import { and, eq, gte } from 'drizzle-orm';
+import { and, eq, gte, isNull, or } from 'drizzle-orm';
 import { pathWithLang } from '$lib/helper/path';
+import { nanoid } from 'nanoid';
+import { SHORTEN_LENGTH } from '$lib/helper/defaults';
+import type { Link as LinkSchema } from '$lib/server/db/schema';
+import { ORIGIN } from '$lib/server/defaults.js';
+import type { Link } from '$lib/definitions';
 
-export const load: PageServerLoad = async ({ locals }) => {
+const saveLink = (data: LinkSchema, counter = 5) => {
+	try {
+		db.insert(schema.link).values([data]).run();
+		return data.id;
+	} catch (err) {
+		if (
+			err != null &&
+			typeof err === 'object' &&
+			!Array.isArray(err) &&
+			'code' in err &&
+			err.code === 'SQLITE_CONSTRAINT_PRIMARYKEY'
+		) {
+			const id = nanoid(SHORTEN_LENGTH - (counter - 10));
+			return saveLink({ ...data, id }, counter - 1);
+		} else {
+			throw err;
+		}
+	}
+};
+
+export const load: PageServerLoad = async ({ locals, request }) => {
+	const origin = ORIGIN || request.headers.get('origin');
+	if (!origin) {
+		error(400, 'Origin header is missing');
+	}
 	const form = superValidate(valibot(getLinkSchema(!!locals.user && !locals.user.temp)));
 	if (!locals.user) {
 		return {
-			links: [],
-			form: await form
+			links: [] as Link[],
+			form: await form,
+			origin
 		};
 	}
+
 	const data = db
 		.select({
 			url: schema.link.url,
@@ -24,10 +55,16 @@ export const load: PageServerLoad = async ({ locals }) => {
 			expiresAt: schema.link.expiresAt
 		})
 		.from(schema.link)
-		.where(and(eq(schema.link.userId, locals.user.id), gte(schema.link.expiresAt, new Date())))
+		.where(
+			and(
+				eq(schema.link.userId, locals.user.id),
+				or(gte(schema.link.expiresAt, new Date()), isNull(schema.link.expiresAt))
+			)
+		)
 		.all();
 
 	return {
+		origin,
 		links: data,
 		form: await form
 	};
@@ -53,19 +90,15 @@ export const actions = {
 		const { ttl, link: url, short } = form.data;
 		const expiresAt = ttl === Infinity ? null : new Date(Date.now() + ttl);
 
-		db.insert(schema.link)
-			.values([
-				{
-					id: short,
-					url,
-					userId: user.id,
-					createdAt: new Date(),
-					expiresAt
-				}
-			])
-			.run();
+		const id = saveLink({
+			id: short || nanoid(SHORTEN_LENGTH),
+			userId: user.id,
+			url,
+			createdAt: new Date(),
+			expiresAt
+		});
 
-		redirect(302, pathWithLang(`/link/${short}`));
+		redirect(302, pathWithLang(`/link/${id}`));
 	},
 	remove: async ({ locals, request }) => {
 		const { user } = locals;

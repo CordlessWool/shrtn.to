@@ -20,7 +20,8 @@
 	</nav>
 </header>
 
-<style lang="postcss">
+<style>
+	@reference "tailwindcss/theme";
 	header {
 		@apply flex items-center justify-end gap-3 p-3;
 	}
@@ -36,8 +37,9 @@
 	nav {
 		@apply flex items-center gap-3;
 	}
-	nav > :global(*) {
-		@apply underline-offset-4 hover:font-bold hover:underline;
+	nav :global(button),
+	nav :global(a) {
+		@apply cursor-pointer underline-offset-4 hover:font-bold hover:underline;
 		@apply transform transition-all duration-300 ease-in-out hover:scale-105;
 	}
 </style>

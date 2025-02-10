@@ -45,11 +45,11 @@ export const ttlFromStep = (step: TTL_STEPS): number => {
 	return TTLs[step][0];
 };
 
-const ttlMapFromStep = (step: TTL_STEPS): [number, string][] => {
-	return TTLs.slice(0, step + 1) as [number, string][];
+const ttlMapFromStep = (step: TTL_STEPS) => {
+	return TTLs.slice(0, step + 1) as [number, (typeof TTLs)[number][1]][];
 };
-const getTTLTempUser = (): [number, string][] => ttlMapFromStep(MAX_TTL_TEMP);
-const getTTLUser = (): [number, string][] => ttlMapFromStep(MAX_TTL_USER);
+const getTTLTempUser = () => ttlMapFromStep(MAX_TTL_TEMP);
+const getTTLUser = () => ttlMapFromStep(MAX_TTL_USER);
 
 export const getTTLs = (loggedin: boolean) => (loggedin ? getTTLUser() : getTTLTempUser());
 
@@ -65,8 +65,7 @@ export const LinkSchemaSignedUp = v.object({
 	link: LinkValueSchema,
 	ttl: v.pipe(v.optional(v.number(), HOUR_IN_MS), v.maxValue(ttlFromStep(MAX_TTL_USER))),
 	short: v.pipe(
-		v.optional(v.string(), () => nanoid(SHORTEN_LENGTH)),
-		v.minLength(SHORTEN_LENGTH)
+		v.fallback(v.pipe(v.string(), v.trim(), v.minLength(1)), () => nanoid(SHORTEN_LENGTH))
 	)
 });
 

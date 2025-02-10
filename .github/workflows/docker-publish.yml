@@ -2,8 +2,6 @@ name: Publish Docker image
 
 on:
   push:
-    branches:
-      - main
     tags:
       - 'v*'
       - 'v[0-9]+.[0-9]+.[0-9]+'
@@ -44,6 +42,7 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          platforms: linux/amd64,linux/arm64,linux/arm/v7
 
       # - name: Generate artifact attestation
       #   uses: actions/attest-build-provenance@v2
