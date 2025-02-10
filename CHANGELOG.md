@@ -1,5 +1,11 @@
 # shrtn.to
 
+## 1.6.4
+
+### Patch Changes
+
+- add a descrtipin for link input
+
 ## 1.6.3
 
 ### Patch Changes
