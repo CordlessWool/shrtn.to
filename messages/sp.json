@@ -1,6 +1,5 @@
 {
 	"$schema": "https://inlang.com/schema/inlang-message-format",
-
 	"title": "Shrtn - tu propio acortador de enlaces",
 	"meta_description": "Shrtn es tu propio acortador de enlaces personalizable. Acorta, gestiona y rastrea tus enlaces fácilmente con nuestra solución de código abierto.",
 	"meta_keywords": "Acortador de enlaces, Acortador de URL, Código abierto, Personalizable, Gestión de enlaces",
@@ -10,7 +9,8 @@
 	"sign_out": "Cerrar sesión",
 	"teaser": "Acorta tus enlaces fácil y rápidamente con software de código abierto",
 	"teaser_sub": "gestiona el tuyo propio",
-	"link_input_placeholder": "Introduce un enlace para acortar aquí",
+	"link_input_placeholder": "https://example.com",
+	"link_input_description": "Introduce tu enlace en el campo y elige un tiempo de vida",
 	"anhour": "una hora",
 	"aday": "un día",
 	"aweek": "una semana",
@@ -45,5 +45,6 @@
 	"ttl": "Duración",
 	"send_verification": "Enviar correo de verificación",
 	"verification_mail_headline": "Bienvenido a shrtn",
-	"verification_mail_body": "Por favor, introduce la siguiente clave en la página que se abrió después de introducir tu correo electrónico. Esta clave solo funciona en esa página."
+	"verification_mail_body": "Por favor, introduce la siguiente clave en la página que se abrió después de introducir tu correo electrónico. Esta clave solo funciona en esa página.",
+	"github_link_title": "Código fuente en GitHub"
 }
